@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>Tattools - Detalhes Gest&atilde;o Financeira</title>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body th:background="@{/img/backgroundall.png}">
+<div th:each="gestaoFinanceira : ${gestaoFinanceira}" class="container">
+  <br>
+  <a th:onclick="goBack()" class="waves-effect waves-light grey darken-3 lighten-1 btn-small"><i class="material-icons left">arrow_back</i>Voltar</a>
+  <a th:if="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}" id="btnEfetuarRecebimento" th:href="@{#modalEfetuarRecebimento}" class="waves-effect waves-light grey darken-3 lighten-1 btn-small modal-trigger"><i class="material-icons left">attachment</i>Efetuar Recebimento</a>
+  <br><br><br>  
+    <form id="formDetalhesOS" class="col s12" method="post">
+      <div class="row">
+        <div class="input-field col s2">
+          <input style="font-size: 12px;" id="dataCadastro" name="dataCadastro" th:value="${#dates.format(gestaoFinanceira.dataCadastro, 'dd/MM/yyyy')}" type="text" required disabled>
+          <label for="dataCadastro">Cadastro</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px;" id="dataAlteracao" name="dataAlteracao" th:value="${#dates.format(gestaoFinanceira.dataAlteracao, 'dd/MM/yyyy HH:mm')}" type="text" required disabled>
+          <label for="dataAlteracao">Altera&ccedil;&atilde;o</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="gestaoFinanceiraId" name="gestaoFinanceiraId" th:value="${gestaoFinanceira.gestaoFinanceiraId}" type="text" required disabled>
+          <label for="nome">N&deg; Fin.</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="ordemServicoId" name="ordemServicoId" th:value="${gestaoFinanceira.ordemServico.ordemServicoId}" type="text" required disabled>
+          <label for="nome">N&deg; OS</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="nomeCliente" name="nomeCliente" th:value="${gestaoFinanceira.ordemServico.cliente.nome}" type="text" required disabled>
+          <label for="nomeCliente">Cliente</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="nomeUsuario" name="nomeUsuario" th:value="${gestaoFinanceira.ordemServico.usuario.nome + ' (' + gestaoFinanceira.ordemServico.usuario.login + ')'}" type="text" required disabled>
+          <label for="nomeCliente">Gerador por</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="descricao" name="descricao" th:value="${gestaoFinanceira.descricao}" type="text" required disabled>
+          <label for="nome">Descri&ccedil;&atilde;o</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 14px; font-weight: bold;" id="valorTotalDinheiro" name="valorTotalDinheiro" th:value="'R$ ' + ${gestaoFinanceira.ordemServico.totalDinheiro}" type="text" required disabled>
+          <label for="valorTotalOS">Dinheiro</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 14px; font-weight: bold;" id="valorTotalDebito" name="valorTotalDebito" th:value="'R$ ' + ${gestaoFinanceira.ordemServico.totalDebito}" type="text" required disabled>
+          <label for="valorTotalOS">D&eacute;bito</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 14px; font-weight: bold;" id="valorTotalCredito" name="valorTotalCredito" th:value="'R$ ' + ${gestaoFinanceira.ordemServico.totalCredito}" type="text" required disabled>
+          <label for="valorTotalOS">Cr&eacute;dito</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="totalParcelasCredito" name="totalParcelasCredito" th:value="${gestaoFinanceira.ordemServico.totalParcelasCredito}" type="text" required disabled>
+          <label for="valorTotalOS">Parcelas Cr&eacute;dito</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 14px; font-weight: bold;" id="valorProduto" name="valorProduto" th:value="'R$ ' + ${gestaoFinanceira.ordemServico.valorProduto}" type="text" required disabled>
+          <label for="valorProduto">Produto</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 14px; font-weight: bold;" id="valorServico" name="valorServico" th:value="'R$ ' + ${gestaoFinanceira.ordemServico.valorServico}" type="text" required disabled>
+          <label for="valorServico">Servi&ccedil;o</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="valorTotalOS" name="valorTotalOS" th:value="'R$ ' + ${gestaoFinanceira.valorTotal}" type="text" required disabled>
+          <label for="valorTotalOS">Total OS</label>
+        </div>
+        <div class="input-field col s12"></div>
+        <div class="input-field col s12"></div>
+        <div class="input-field col s3">
+          <input style="font-size: 14px; font-weight: bold;" id="recebidoTatuador" name="recebidoTatuador" th:value="'R$ ' + ${gestaoFinanceira.totalRecebidoTatuador}" type="text" required disabled>
+          <label for="recebidoTatuador">J&aacute; recebido (Tatuador)</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 14px; font-weight: bold;" id="receberTatuador" name="receberTatuador" th:value="'R$ ' + ${gestaoFinanceira.totalReceberTatuador}" type="text" required disabled>
+          <label for="receberTatuador">&Agrave; receber (Tatuador)</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="totalComissaoTatuadorDinheiro" name="totalComissaoTatuadorDinheiro" th:value="'R$ ' + ${gestaoFinanceira.totalComissaoTatuadorDinheiro}" type="text" required disabled>
+          <label for="totalComissaoTatuadorDinheiro">Tatuador Dinheiro</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="totalComissaoTatuadorDebito" name="totalComissaoTatuadorDebito" th:value="'R$ ' + ${gestaoFinanceira.totalComissaoTatuadorDebito}" type="text" required disabled>
+          <label for="totalComissaoTatuadorDebito">Tatuador D&eacute;bito</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="totalComissaoTatuadorCredito" name="totalComissaoTatuadorCredito" th:value="'R$ ' + ${gestaoFinanceira.totalComissaoTatuadorCredito}" type="text" required disabled>
+          <label for="totalComissaoTatuadorCredito">Tatuador Cr&eacute;dito</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 14px; font-weight: bold;" id="totalComissaoTatuador" name="totalComissaoTatuador" th:value="'R$ ' + ${gestaoFinanceira.totalComissaoTatuador}" type="text" required disabled>
+          <label for="totalComissaoTatuador">Tatuador Total</label>
+        </div>
+        <div class="input-field col s5">
+          <input style="font-size: 14px; font-weight: bold;" id="valorSaque" name="valorSaque" th:value="'R$ ' + ${gestaoFinanceira.valorSaque}" type="text" required disabled>
+          <label for="valorSaque">Saque (Recebido)</label>
+        </div>
+        <div class="input-field col s4">
+          <input style="font-size: 14px; font-weight: bold;" id="valorSaquePendencia" name="valorSaquePendencia" th:value="'R$ ' + ${valorSaqueExcedido ne null ? valorSaqueExcedido : '0.00'}" type="text" required disabled>
+          <label for="valorSaque">Saque (Excedido / Pendente)</label>
+        </div>
+        <div class="input-field col s4"></div>
+        <div class="input-field col s12"></div>        
+        <div class="input-field col s3">
+          <input style="font-size: 14px; font-weight: bold;" id="recebidoStudio" name="jaRecebido" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? 'R$ ' + gestaoFinanceira.totalRecebidoStudio : '-'}" type="text" required disabled>
+          <label for="recebidoStudio">J&aacute; recebido (Studio)</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 14px; font-weight: bold;" id="receberStudio" name="aReceber" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? 'R$ ' + gestaoFinanceira.totalReceberStudio : '-'}" type="text" required disabled>
+          <label for="receberStudio">&Agrave; receber (Studio)</label>
+        </div>
+         <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="totalComissaoStudioDinheiro" name="totalComissaoStudioDinheiro" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? 'R$ ' + gestaoFinanceira.totalComissaoStudioDinheiro : '-'}" type="text" required disabled>
+          <label for="totalComissaoStudioDinheiro">Studio Dinheiro</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="totalComissaoStudioDebito" name="totalComissaoStudioDebito" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? 'R$ ' + gestaoFinanceira.totalComissaoStudioDebito : '-'}" type="text" required disabled>
+          <label for="totalComissaoStudioDebito">Studio D&eacute;bito</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="totalComissaoStudioCredito" name="totalComissaoStudioCredito" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? 'R$ ' + gestaoFinanceira.totalComissaoStudioCredito : '-'}" type="text" required disabled>
+          <label for="totalComissaoStudioCredito">Studio Cr&eacute;dito</label>
+        </div>
+        <div class="input-field col s12">
+          <input style="font-size: 14px; font-weight: bold;" id="totalComissaoStudio" name="totalComissaoStudio" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? 'R$ ' + gestaoFinanceira.totalComissaoStudio : '-'}" type="text" required disabled>
+          <label for="totalComissaoStudio">Studio Total</label>
+        </div>
+        <div class="input-field col s4"></div>
+	  </div>	  
+	  <label style="font-size: 25px; font-weight: lighter;">Recebimento(s)</label>
+	  <br><br>
+	  <div class="row">
+	  <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="tatuadorDinheiroRecebido" name="tatuadorDinheiroRecebido" th:value="${gestaoFinanceira.tatuadorDinheiroRecebido eq true ? 'RECEBIDO' : gestaoFinanceira.totalComissaoTatuadorDinheiro > 0 ? 'PENDENTE' : 'N/A'}" type="text" required disabled>
+          <label for="tatuadorDinheiroRecebido">Dinheiro Tatuador</label>
+      </div>
+      <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="tatuadorDebitoRecebido" name="tatuadorDebitoRecebido" th:value="${gestaoFinanceira.tatuadorDebitoRecebido eq true ? 'RECEBIDO' : gestaoFinanceira.totalComissaoTatuadorDebito > 0 ? 'PENDENTE' : 'N/A'}" type="text" required disabled>
+          <label for="tatuadorDebitoRecebido">D&eacute;bito Tatuador</label>
+      </div>
+      <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="tatuadorCreditoRecebido" name="tatuadorCreditoRecebido" th:value="${gestaoFinanceira.tatuadorCreditoRecebido eq true ? 'RECEBIDO' : gestaoFinanceira.totalComissaoTatuadorCredito > 0 ? 'PENDENTE' : 'N/A'}" type="text" required disabled>
+          <label for="tatuadorCreditoRecebido">Cr&eacute;dito Tatuador</label>
+      </div>
+      <div class="input-field col s12"></div>
+      <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="studioDinheiroRecebido" name="studioDinheiroRecebido" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? gestaoFinanceira.studioDinheiroRecebido eq true ? 'RECEBIDO' : gestaoFinanceira.totalComissaoStudioDinheiro > 0 ? 'PENDENTE' : 'N/A' : '-'}" type="text" required disabled>
+          <label for="studioDinheiroRecebido">Dinheiro Studio</label>
+      </div>
+      <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="studioDebitoRecebido" name="studioDebitoRecebido" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? gestaoFinanceira.studioDebitoRecebido eq true ? 'RECEBIDO' : gestaoFinanceira.totalComissaoStudioDebito > 0 ? 'PENDENTE' : 'N/A' : '-'}" type="text" required disabled>
+          <label for="studioDebitoRecebido">D&eacute;bito Studio</label>
+      </div>
+      <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="studioCreditoRecebido" name="studioCreditoRecebido" th:value="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? gestaoFinanceira.studioCreditoRecebido eq true ? 'RECEBIDO' : gestaoFinanceira.totalComissaoStudioCredito > 0 ? 'PENDENTE' : 'N/A' : '-'}" type="text" required disabled>
+          <label for="studioCreditoRecebido">Cr&eacute;dito Studio</label>
+      </div>
+      </div>
+      <br>
+      <div th:if="${gestaoFinanceiraParcelasCredito.size() > 0}"> 	
+	  <label style="font-size: 25px; font-weight: lighter;">Parcela(s) Cr&eacute;dito</label>
+	  <div><br></div>
+	  <table class="responsive-table" style="font-size: 12px; overflow: auto;">
+		   <thead>
+		       <tr>
+		       	<th>Data Vencimento</th>
+		       	<th>Valor Total Parcela</th>
+		       	<th>Valor Tatuador</th>
+		       	<th>Valor Studio</th>
+		       	<th>Recebido</th>
+		       </tr>
+		   </thead>
+		   <tbody>
+		       <tr th:each="gestaoFinanceiraParcelasCredito : ${gestaoFinanceiraParcelasCredito}">
+		       	<td style="font-weight: bold;"><span th:text="${gestaoFinanceiraParcelasCredito.dataVencimento}"></span></td>
+		       	<td style="font-weight: bold;"><span th:text="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? 'R$ ' + gestaoFinanceiraParcelasCredito.valorParcela : '-'}"></span></td>
+		       	<td style="font-weight: bold;"><span th:text="'R$ ' + ${gestaoFinanceiraParcelasCredito.valorParcelaTatuador}"></span></td>
+		       	<td style="font-weight: bold;"><span th:text="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO' ? 'R$ ' + gestaoFinanceiraParcelasCredito.valorParcelaStudio : '-'}"></span></td>
+		       	<td id="tdRecebido" style="font-weight: bold;"><span th:text="${gestaoFinanceiraParcelasCredito.recebido eq true ? 'Sim' : 'N&atilde;o'}"></span></td>
+		       </tr>
+		   </tbody>
+	   </table>
+	   <br><br>
+	   </div>
+    </form>    
+</div>     
+  
+<div id="modalEfetuarRecebimento" class="modal">
+ <div class="modal-content" align="center">
+   	<h5>Deseja realmente receber os valores desse registro financeiro?</h5><br>
+   	<div class="row">
+   		<div class="input-field col s4">
+			<div class="switch">
+				<label><input type="checkbox" id="recebeDinheiro" value="false">
+				<span class="lever"></span>RECEBER DINHEIRO</label><br>
+				<label id="valorDinheiroReceber"></label>
+			</div>
+		</div>
+		<div class="input-field col s4">
+			<div class="switch">
+				<label><input type="checkbox" id="recebeDebito" value="false">
+				<span class="lever"></span>RECEBER D&Eacute;BITO</label><br>
+				<label id="valorDebitoReceber"></label>
+			</div>
+		</div>
+		<div class="input-field col s4">
+			<div class="switch">
+				<label><input type="checkbox" id="recebeCredito" value="false">
+				<span class="lever"></span>RECEBER CR&Eacute;DITO</label><br>
+				<label id="valorCreditoReceber"></label>
+			</div>
+		</div>
+	</div>
+	<br><br>
+	<a class="modal-close waves-effect waves-green btn-flat" id="btnEfetuarRecebimento2">Sim</a>
+    <a class="modal-close waves-effect waves-red btn-flat">N&atilde;o</a>
+  </div>
+</div>
+     
+<script type="text/javascript" src="../js/materialize.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+	$('.modal').modal();
+	$('.dropdown-trigger').dropdown();	
+	
+});
+
+var vlrTotalDinheiro = [[${gestaoFinanceira.ordemServico.totalDinheiro}]];
+var vlrTotalDebito = [[${gestaoFinanceira.ordemServico.totalDebito}]];
+var vlrTotalCredito = [[${gestaoFinanceira.ordemServico.totalCredito}]];
+
+var studioDinheiroRecebido = [[${gestaoFinanceira.studioDinheiroRecebido}]];
+var tatuadorDinheiroRecebido = [[${gestaoFinanceira.tatuadorDinheiroRecebido}]];
+
+var studioDebitoRecebido = [[${gestaoFinanceira.studioDebitoRecebido}]];
+var tatuadorDebitoRecebido = [[${gestaoFinanceira.tatuadorDebitoRecebido}]];
+
+var studioCreditoRecebido = [[${gestaoFinanceira.studioCreditoRecebido}]];
+var tatuadorCreditoRecebido = [[${gestaoFinanceira.tatuadorCreditoRecebido}]];
+
+$('#btnEfetuarRecebimento').click(function(){
+	
+	$('#valorDinheiroReceber').text('R$ ' + [[${gestaoFinanceira.ordemServico.totalDinheiro}]]);
+	$('#valorDebitoReceber').text('R$ ' + [[${gestaoFinanceira.ordemServico.totalDebito}]]);
+	$('#valorCreditoReceber').text('R$ ' + [[${gestaoFinanceira.ordemServico.totalCredito}]]);
+	
+	if(vlrTotalDinheiro <= 0 || studioDinheiroRecebido && tatuadorDinheiroRecebido){
+		$('#valorDinheiroReceber').text('R$ ' + [[${gestaoFinanceira.ordemServico.totalDinheiro}]] + ' (recebido)');
+		$('#recebeDinheiro').attr('disabled', 'disabled');
+	}
+	if(vlrTotalDebito <= 0 || studioDebitoRecebido && tatuadorDebitoRecebido){
+		$('#valorDebitoReceber').text('R$ ' + [[${gestaoFinanceira.ordemServico.totalDebito}]] + ' (recebido)');
+		$('#recebeDebito').attr('disabled', 'disabled');
+	}
+	if(vlrTotalCredito <= 0 || studioCreditoRecebido && tatuadorCreditoRecebido){
+		$('#valorCreditoReceber').text('R$ ' + [[${gestaoFinanceira.ordemServico.totalCredito}]] + ' (recebido)');
+		$('#recebeCredito').attr('disabled', 'disabled');
+	}
+});
+
+$("#btnEfetuarRecebimento2").click(function() {
+	
+	if ($('#recebeDinheiro').is(':checked') && vlrTotalDinheiro > 0) {
+		$('#recebeDinheiro').val(true);
+	}
+	if ($('#recebeDebito').is(':checked') && vlrTotalDebito > 0) {
+		$('#recebeDebito').val(true);
+	}
+	if ($('#recebeCredito').is(':checked') && vlrTotalCredito > 0) {
+		$('#recebeCredito').val(true);
+	}
+	
+	$.ajax({
+		type : 'POST',
+		url : '../efetuarRecebimentoGestaoFinanceira',
+		data : {
+			'gestaoFinanceiraId' : [[${gestaoFinanceira.gestaoFinanceiraId}]],
+			'recebeDinheiro' : $('#recebeDinheiro').val(),
+			'recebeDebito' : $('#recebeDebito').val(),
+			'recebeCredito' : $('#recebeCredito').val(),
+		},
+		success : function(data){
+			location.reload();
+		},
+		error : function() {
+			alert("Ocorreu um erro ao efetuar pagamento do registro!");
+		}
+	});
+});
+
+function goBack() {
+	  window.history.back();
+}
+
+</script>
+</body>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</html>

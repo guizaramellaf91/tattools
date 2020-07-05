@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportOS" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d8e73c1b-4ac2-484d-880d-50d140ab633d">
+	<subDataset name="Dataset1" uuid="1c4d6443-1c90-4ed1-accc-b885be503708">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="cliente" class="java.lang.String"/>
+	<parameter name="celular" class="java.lang.String"/>
+	<parameter name="ordemServicoId" class="java.lang.Long"/>
+	<parameter name="dataCadastro" class="java.util.Date"/>
+	<parameter name="descricao" class="java.lang.String"/>
+	<parameter name="tipoSangue" class="java.lang.String"/>
+	<parameter name="autorizaFotos" class="java.lang.String"/>
+	<parameter name="possuiHepatite" class="java.lang.String"/>
+	<parameter name="possuiAlergias" class="java.lang.String"/>
+	<parameter name="possuiDiabetes" class="java.lang.String"/>
+	<parameter name="tomaAnticoagulante" class="java.lang.String"/>
+	<parameter name="email" class="java.lang.String"/>
+	<parameter name="valorTotal" class="java.math.BigDecimal"/>
+	<parameter name="valorProduto" class="java.math.BigDecimal"/>
+	<parameter name="valorServico" class="java.math.BigDecimal"/>
+	<parameter name="produto" class="java.lang.String"/>
+	<parameter name="totalDinheiro" class="java.math.BigDecimal"/>
+	<parameter name="servico" class="java.lang.String"/>
+	<parameter name="totalDebito" class="java.math.BigDecimal"/>
+	<parameter name="totalCredito" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band height="1" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="0" width="595" height="1" uuid="c5a7711f-569a-446e-94d2-43f094444e9b"/>
+			</line>
+		</band>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="-19" width="595" height="98" uuid="43f77f0d-0409-4447-b644-6be847c9e74c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18"/>
+				</textElement>
+				<text><![CDATA[Ordem de Serviço
+(Autorização de procedimento de tatuagem / piercing)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="-20" width="595" height="1" uuid="c63e1103-69e6-4de8-918c-fda803037de0"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="-16" width="34" height="16" uuid="71be769f-fa04-4fbc-8ed3-1760d101c75f"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[N° OS:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="34" y="-16" width="28" height="16" uuid="8ee2b13c-b0a4-4ca5-8675-0ebc5d961ecd"/>
+				<textFieldExpression><![CDATA[$P{ordemServicoId}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="62" y="-16" width="32" height="16" uuid="c8a4f068-07d6-4fb8-80f0-22ff7cdabd52"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="-16" width="75" height="16" uuid="1849883c-24e5-4500-bd41-ce99f3016b4a"/>
+				<textFieldExpression><![CDATA[$P{dataCadastro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="116" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="74" width="50" height="16" uuid="39c07b90-b048-44d8-a6ae-9d5be1d06c3d"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Tatuador:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="74" width="336" height="16" uuid="05ff56cb-2a7d-4cec-b71a-ae2423639fec"/>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="26" width="50" height="16" uuid="9850436b-de96-4427-816d-7efea578dde9"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="42" width="50" height="16" uuid="52725045-b4d9-4920-beff-8c397ba17f0b"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Celular:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="26" width="336" height="16" uuid="491020d6-02a8-4dbf-be5f-6a64028d8524"/>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="42" width="336" height="16" uuid="ba00fd2f-e6d9-455a-ba80-8dc3c869b653"/>
+				<textFieldExpression><![CDATA[$P{celular}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-20" y="0" width="595" height="1" uuid="3abae0b9-8630-46ae-a964-82795604ee84"/>
+			</line>
+			<staticText>
+				<reportElement x="430" y="26" width="86" height="16" uuid="3521195d-79a5-4618-b81d-b71ade9ff4f6"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Autoriza Fotos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="10" width="86" height="16" uuid="36289eb4-8ca9-45a4-ab73-e84ecbc17f97"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Tipo Sangue:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="42" width="86" height="16" uuid="277193f5-9f9c-4a26-aa74-84d1c07488d7"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Possui Hepatite:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="58" width="86" height="16" uuid="1a3d94ed-a390-406b-9f5b-a882bd221656"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Possui Alergias:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="74" width="86" height="16" uuid="0417ab0e-a3a5-4bac-a992-ea0bf71fc889"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Possui Diabetes:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="90" width="86" height="16" uuid="6e3c785d-eccd-4a5d-80f6-8e8ec16a3e77"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Anticoagulantes:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="516" y="10" width="39" height="16" uuid="bf2442e1-c4bd-4a32-9ffe-b78d16488dce"/>
+				<textFieldExpression><![CDATA[$P{tipoSangue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="516" y="26" width="39" height="16" uuid="5472e37b-2a98-4718-9596-e30066d4cb52"/>
+				<textFieldExpression><![CDATA[$P{autorizaFotos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="516" y="42" width="39" height="16" uuid="437ab6f7-d6c2-41d1-a221-6a29d30861c5"/>
+				<textFieldExpression><![CDATA[$P{possuiHepatite}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="516" y="58" width="39" height="16" uuid="ac97f7a0-100e-4825-b976-244af4ffd0c4"/>
+				<textFieldExpression><![CDATA[$P{possuiAlergias}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="516" y="74" width="39" height="16" uuid="ed52f7c3-99ed-4646-b843-9bb710ca5757"/>
+				<textFieldExpression><![CDATA[$P{possuiDiabetes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="516" y="90" width="39" height="16" uuid="1bc13611-c66d-4db0-a5c6-549dce818580"/>
+				<textFieldExpression><![CDATA[$P{tomaAnticoagulante}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="58" width="50" height="16" uuid="1e4ae483-b4fd-42a2-96d6-55fd7eb133e2"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[E-mail:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="58" width="336" height="16" uuid="1f0516ca-5896-407c-aeba-e1a2ff829c33"/>
+				<textFieldExpression><![CDATA[$P{email}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="84" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="0" width="595" height="1" uuid="ff2f910e-fe95-4f7a-a94e-c8a7aee9e62d"/>
+			</line>
+			<textField>
+				<reportElement x="510" y="42" width="45" height="16" uuid="da62147a-19e1-4503-87c0-a18430f88d73"/>
+				<textFieldExpression><![CDATA[$P{valorTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="10" width="45" height="16" uuid="493910f5-ae5c-4fa2-aa0b-c1048b0c42f2"/>
+				<textFieldExpression><![CDATA[$P{valorProduto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="26" width="45" height="16" uuid="32e6cc95-c217-4200-a922-7ef1c5371b88"/>
+				<textFieldExpression><![CDATA[$P{valorServico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="42" width="70" height="16" uuid="0ac566e0-55db-40d2-9407-3bdbb2c5eb92"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Valor Total: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="10" width="70" height="16" uuid="4e3c9807-9c10-44d8-838a-c66f53efb849"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Valor Produto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="26" width="70" height="16" uuid="2f7aacb7-da2c-4b4f-9fd8-68aee518245d"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Valor Serviço:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="10" width="70" height="16" uuid="c03408fa-9778-4a72-8e6e-4823d48ce508"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Produto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="26" width="70" height="16" uuid="c2bcb4c8-8bce-41e6-b336-23c7732f10c8"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Serviço:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="10" width="129" height="16" uuid="b8b6502f-ced0-4352-adf0-5cf12bfc4deb"/>
+				<textFieldExpression><![CDATA[$P{produto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="26" width="129" height="16" uuid="a64936a3-f02e-49c8-820d-aec11cf19fc4"/>
+				<textFieldExpression><![CDATA[$P{servico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="240" y="10" width="112" height="15" uuid="82969d84-6d4d-48d9-8fc2-9d65ad039af3"/>
+				<text><![CDATA[Forma(s) de pagamento;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="25" width="50" height="16" uuid="afa584f7-349c-4d61-bedf-23732255f86a"/>
+				<text><![CDATA[Dinheiro:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="41" width="50" height="16" uuid="d1203952-f434-424a-acec-d5ed6db5efb7"/>
+				<text><![CDATA[Débito:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="57" width="50" height="16" uuid="e27c09d1-3aed-4099-9625-78c0d062a37a"/>
+				<text><![CDATA[Crédito:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="290" y="25" width="62" height="16" uuid="c6ed30b2-6dba-4e3c-879f-3074f71a6395"/>
+				<textFieldExpression><![CDATA[$P{totalDinheiro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="41" width="62" height="16" uuid="5942cdbd-281a-4514-8e92-5c957f61746d"/>
+				<textFieldExpression><![CDATA[$P{totalDebito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="57" width="62" height="16" uuid="ebadde55-3b22-4782-9dc4-fe377d535636"/>
+				<textFieldExpression><![CDATA[$P{totalCredito}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="208">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="-11" y="12" width="576" height="118" uuid="dea2b10f-8fb8-4c34-aae2-28bec9cc3127"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{descricao}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="158" y="145" width="240" height="1" uuid="dc4d5040-1424-427a-9469-9f52d6e8c9bc"/>
+			</line>
+			<staticText>
+				<reportElement x="189" y="155" width="190" height="19" uuid="c8835597-48f7-42a2-b2b6-e5f87db13361"/>
+				<text><![CDATA[Assinatura do cliente e/ou responsável]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="501" y="190" width="54" height="18" uuid="901a550b-1002-4e22-aa2a-b643ecfe9a08"/>
+				<text><![CDATA[by Tattools]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="0" width="595" height="1" uuid="45711787-043e-4478-aff4-5296f1475ede"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

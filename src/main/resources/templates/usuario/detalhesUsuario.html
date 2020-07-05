@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<title>Tattools - Detalhes Usu&aacute;rio</title>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body th:background="@{/img/backgroundall.png}">
+	<div class="container">
+		<br>
+		<i class="material-icons left">person</i><label>Usu&aacute;rio: </label><label style="font-weight: bold; font-size: 14px;" th:text="${usuario.nome}"></label>
+		<br>
+		<div align="center"><strong><label style="color: #b30000;" id="msg" th:text="${msg}"></label></strong></div>
+		<br>
+		<div>
+			<i class="tiny material-icons left">flag</i><label
+				style="font-size: 10px;">Quantidade de acessos: </label><label
+				style="font-size: 12px; font-weight: bold;"
+				th:text="${usuario.acessos}"></label>
+		</div>
+		<div>
+			<i class="tiny material-icons left">access_time</i><label
+				style="font-size: 10px;">&Uacute;ltimo Acesso: </label><label
+				style="font-size: 12px; font-weight: bold;"
+				th:text="${#dates.format(usuario.ultimoAcesso, 'dd/MM/yyyy HH:mm')}"></label>
+		</div>
+		<div>
+			<i class="tiny material-icons left">directions_bike</i><label
+				style="font-size: 10px;">Quantidade de OS: </label><label
+				style="font-size: 12px; font-weight: bold;"
+				th:text="${quantidadeOS}"></label>
+		</div>
+		<br>
+		<label>Tipo: &nbsp;</label><label style="font-weight: bold; font-size: 14px;" th:text="${usuario.tipoUsuario.nomeTipo}"></label>
+		<br>
+		<label>Status: &nbsp;</label><label style="font-weight: bold; font-size: 14px;" th:text="${usuario.ativo eq true ? 'ATIVO' : 'INATIVO'}"></label>
+		<div>
+			<label>D&eacute;bito(s) pendente(s) :</label>&nbsp;<label style="font-weight: bold; font-size: 12px;" th:text="${quantidadeSaquePendente}"></label>
+			<br>
+			<label>Valor Total Pend&ecirc;ncia(s) :</label>&nbsp;<label style="font-weight: bold; font-size: 12px;" th:text="${valorSaquePendente ne null ? valorSaquePendente : '0.00'}"></label>
+		</div>
+		<br>
+		<div>
+		<a th:href=@{#modalFinanceiroUsuario} class="waves-effect waves-light grey darken-1 lighten-1 btn-small modal-trigger"><i class="material-icons left">attach_money</i>Financeiro</a>
+		</div>
+		<br>
+		<br>
+		<form id="formCadastro" class="col s12" method="post">
+			<div class="row">
+				<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" id="nome" name="nome" th:value="${usuario.nome}" type="text" required> 
+					<label style="font-size: 12px;" for="nome">Nome</label>
+				</div>
+				<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" id="login" name="login" th:value="${usuario.login}" type="text" th:disabled="${usuarioLogado.login eq 'admin' || usuarioLogado.login eq 'master'}" required> 
+					<label style="font-size: 12px;" for="login">Login</label>
+				</div>
+				<div class="input-field col s3">
+					<input style="font-size: 12px; font-weight: bold;" id="senha" name="senha" maxlength="15" th:value="${usuario.senha}" type="password" required> 
+					<label style="font-size: 12px;" for="senha">Senha</label>
+				</div>
+				<div class="input-field col s3">
+					<input style="font-size: 12px; font-weight: bold;" id="senhaConfirma" name="senhaConfirma" maxlength="15" th:value="${usuario.senha}" type="password" required> 
+					<label style="font-size: 12px;" for="senhaConfirma">Confirmar Senha</label>
+				</div>
+				<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" placeholder="Insira o e-mail" id="email" name="email" th:value="${usuario.email}" type="email" required> 
+					<label style="font-size: 12px;" for="email">E-mail</label>
+				</div>
+				
+				<div class="input-field col s2">
+					<input style="font-size: 12px; font-weight: bold;" id="comissaoDinheiro" name="comissaoDinheiro" 
+						th:value="${usuario.comissaoDinheiro}" type="text" maxlength="3"
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="comissaoDinheiro">Comiss&atilde;o Dinheiro</label>
+				</div>
+				<div class="input-field col s2">
+					<input style="font-size: 12px; font-weight: bold;" id="comissaoDebito" name="comissaoDebito"
+						th:value="${usuario.comissaoDebito}" type="text" maxlength="3" 
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="comissaoDebito">Comiss&atilde;o D&eacute;bito</label>
+				</div>
+				<div class="input-field col s2">
+					<input style="font-size: 12px; font-weight: bold;" id="comissaoCredito" name="comissaoCredito"
+						th:value="${usuario.comissaoCredito}" type="text" maxlength="3" 
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="comissaoCredito">Comiss&atilde;o Cr&eacute;dito</label>
+				</div>
+				<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" id="quantidadeParcelas" name="quantidadeParcelas"
+						th:value="${usuario.quantidadeParcelas}" type="number" maxlength="2" min="1" max="6" 
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="comissaoCredito">Quantidade de Parcelas (Cr&eacute;dito)</label>
+				</div>
+				<div class="input-field col s2">
+					<input style="font-size: 12px; font-weight: bold;" id="comissaoDinheiroAcimaDe" name="comissaoDinheiroAcimaDe"
+						th:value="${usuario.comissaoDinheiroAcimaDe}" type="text" maxlength="3" 
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="comissaoDinheiro">% Dinheiro (Acima de)</label>
+				</div>
+				<div class="input-field col s2">
+					<input style="font-size: 12px; font-weight: bold;" id="comissaoDebitoAcimaDe" name="comissaoDebitoAcimaDe"
+						th:value="${usuario.comissaoDebitoAcimaDe}" type="text" maxlength="3" 
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="comissaoDebito">% D&eacute;bito (Acima de)</label>
+				</div>
+				<div class="input-field col s2">
+					<input style="font-size: 12px; font-weight: bold;" id="comissaoCreditoAcimaDe" name="comissaoCreditoAcimaDe"
+						th:value="${usuario.comissaoCreditoAcimaDe}" type="text" maxlength="3" 
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="comissaoCredito">% Cr&eacute;dito (Acima de)</label>
+				</div>
+	     		<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" id="valorComissaoAcimaDe" name="valorComissaoAcimaDe"
+						th:value="${usuario.valorComissaoAcimaDe}" type="text" placeholder="R$ 0.00" 
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="valorComissaoAcimaDe">Comiss&atilde;o personalizada acima de</label>
+				</div>
+			    <div class="input-field col s2">
+					<input style="font-size: 12px; font-weight: bold;" id="comissaoProduto" name="comissaoProduto"
+						th:value="${usuario.comissaoProduto}" type="text" maxlength="3" 
+						th:disabled="${usuarioLogado.tipoUsuario.nomeTipo eq 'TATUADOR' ? 'disabled' : false}" required> 
+					<label style="font-size: 12px;" for="comissaoProduto">Comiss&atilde;o (Produtos)</label>
+				</div>
+				<div class="input-field col s4" th:if="${usuarioLogado.login eq 'admin' || usuarioLogado.login eq 'master' && usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}">
+					<select style="font-size: 10px;" class="browser-default" id="tipoUsuarioId" name="tipoUsuarioId" required>
+						<option th:each="tipoUsuario : ${lsTipoUsuario}" th:value="${tipoUsuario.tipoUsuarioId}" th:selected="${tipoUsuario eq usuario.tipoUsuario}" th:text="${tipoUsuario.nomeTipo}"></option>
+					</select>
+				</div>
+				<div class="switch" th:unless="${usuarioLogado.login eq 'admin' || usuarioLogado.login eq 'master' && usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}">
+					<input type="hidden" id="tipoUsuarioId" name="tipoUsuarioId" th:value="${usuario.tipoUsuario.tipoUsuarioId}">
+				</div>
+				<div class="input-field col s2">
+					<div class="switch" th:if="${usuarioLogado.login eq 'admin' || usuarioLogado.login eq 'master' && usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}">
+						<label>Inativo<input type="checkbox" id="ativo" name="ativo" th:checked="${usuario.ativo}">
+						<span class="lever"></span>Ativo</label>
+						<input type="hidden" id="ativoExiste" name="ativoExiste" value="true">
+					</div>
+					<div class="switch" th:unless="${usuarioLogado.login eq 'admin' || usuarioLogado.login eq 'master' && usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}">
+						<input type="hidden" id="ativo" name="ativo" th:value="${usuario.ativo}">
+					</div>
+				</div>
+			</div>
+			<a th:href=@{usuarios} id="btnVoltar" th:name="btnVoltar" class="waves-effect waves-light grey darken-1 lighten-1 btn-small"><i class="material-icons left">arrow_back</i>Voltar</a>
+			<a href="#" id="btnSalvar" th:name="btnSalvar" class="waves-effect waves-light grey darken-1 lighten-1 btn-small"><i class="material-icons left">save</i>Salvar</a>
+			<div id="progress" style="display: none;" class="progress">
+				<div class="indeterminate"></div>
+			</div>
+		</form>
+	</div>
+<div id="modalFinanceiroUsuario" class="modal">
+ <div class="modal-content" align="center">
+   	<h5>Detalhamento Financeiro</h5><br>
+	<div class="row">
+		<div class="input-field col s6">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${usuario.nome}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="nome">Nome</label>
+		</div>
+		<div class="input-field col s4">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${usuario.login}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="login">Login</label>
+		</div>
+		<div class="input-field col s2">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${quantidadeOS}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="login">Quantidade OS:</label>
+		</div>
+		<div class="input-field col s4">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${totalRecebidoTatuadorDinheiro ne null ? totalRecebidoTatuadorDinheiro : '0.00'}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="senha">Total Recebido Dinheiro: R$</label>
+		</div>
+		<div class="input-field col s4">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${totalRecebidoTatuadorDebito ne null ? totalRecebidoTatuadorDebito : '0.00'}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="senhaConfirma">Total Recebido D&eacute;bito: R$</label>
+		</div>
+		<div class="input-field col s4">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${totalRecebidoTatuadorCredito ne null ? totalRecebidoTatuadorCredito : '0.00'}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="senhaConfirma">Total Recebido Cr&eacute;dito: R$</label>
+		</div>
+		<div class="input-field col s4">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${totalReceberTatuadorDinheiro ne null ? totalReceberTatuadorDinheiro : '0.00'}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="email">Total Receber Dinheiro: R$</label>
+		</div>
+		<div class="input-field col s4">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${totalReceberTatuadorDebito ne null ? totalReceberTatuadorDebito : '0.00'}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="email">Total Receber D&eacute;bito: R$</label>
+		</div>
+		<div class="input-field col s4">
+			<input style="font-size: 12px; font-weight: bold;" th:value="${totalReceberTatuadorCredito ne null ? totalReceberTatuadorCredito : '0.00'}" type="text" required disabled> 
+			<label style="font-size: 12px;" for="email">Total Receber Cr&eacute;dito: R$</label>
+		</div>
+	</div>
+    <a class="modal-close waves-effect waves-green btn-flat">Fechar</a>
+  </div>
+</div>
+	
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script>
+
+$(document).ready(function() {
+	
+	$('.modal').modal();
+	$('.dropdown-trigger').dropdown();
+	
+	$('#senha').attr('');
+	$('#senhaConfirma').text('');
+	
+	$('#comissaoDinheiro').mask("#,##0.00", {reverse: true});
+	$('#comissaoDebito').mask("#,##0.00", {reverse: true});
+	$('#comissaoCredito').mask("#,##0.00", {reverse: true});
+	$('#comissaoDinheiroAcimaDe').mask("#,##0.00", {reverse: true});
+	$('#comissaoDebitoAcimaDe').mask("#,##0.00", {reverse: true});
+	$('#comissaoCreditoAcimaDe').mask("#,##0.00", {reverse: true});
+	$('#comissaoProduto').mask("#,##0.00", {reverse: true});
+	$('#quantidadeParcelas').mask("#,##0");
+	$('#valorComissaoAcimaDe').mask("#,##000.00", {reverse: true});
+	
+});
+		
+$("#btnSalvar").click(function() {
+	if ($("#nome").val() && $("#login").val()) {
+		if ($("#senha").val() == $("#senhaConfirma").val()) {
+			
+			$("#nome").prop('disabled', true);
+			$("#login").prop('disabled', true);
+			$("#senha").prop('disabled', true);
+			$("#senhaConfirma").prop('disabled', true);
+			$("#email").prop('disabled', true);
+			$("#ativo").prop('disabled', true);
+			$('#tipoUsuarioId').attr('disabled','disabled');
+			$("#btnSalvar").attr("disabled", "disabled");
+			$("#btnVoltar").attr("disabled", "disabled");
+			$("#msg").hide();
+			$("#progress").show();
+			
+			var userEdit = [[${usuario.usuarioId}]]
+			var userSession = [[${usuarioLogado.usuarioId}]]
+			
+			var statusUsuario = $('#ativo').val();
+			var eAtivo = $('#ativoExiste').val();
+			
+			if ($('#ativo').is(':checked') && eAtivo) {
+				statusUsuario = 1;
+			} else if (!eAtivo){
+				statusUsuario = $('#ativo').val();
+			} else {
+				statusUsuario = 0;
+			}
+			
+			$.ajax({
+				type : 'POST',
+				url : 'detalhesUsuario',
+				data : {
+					"usuarioId" : [[${usuario.usuarioId}]],
+					"nome" : $('#nome').val(),
+					"login" : $('#login').val(),
+					"senha" : $('#senha').val(),
+					"email" : $('#email').val(),
+					"comissaoDinheiro" : $('#comissaoDinheiro').val(),
+					"comissaoDebito" : $('#comissaoDebito').val(),
+					"comissaoCredito" : $('#comissaoCredito').val(),
+					"quantidadeParcelas" : $('#quantidadeParcelas').val(),
+					"comissaoDinheiroAcimaDe" : $('#comissaoDinheiroAcimaDe').val(),
+					"comissaoDebitoAcimaDe" : $('#comissaoDebitoAcimaDe').val(),
+					"comissaoCreditoAcimaDe" : $('#comissaoCreditoAcimaDe').val(),
+					"valorComissaoAcimaDe" : $('#valorComissaoAcimaDe').val(),
+					"comissaoProduto" : $('#comissaoProduto').val(),
+					"ativo" : statusUsuario,
+					"tipoUsuarioId" : $('#tipoUsuarioId').val(),
+				},
+				success : function(data) {
+					if(userEdit !== userSession){
+						location.reload();
+					}else{
+						window.location.href = "./logout";
+					}
+				},
+				error : function() {
+					alert("Ocorreu um erro ao alterar os dados.");
+					$("#btnAlterarAmbiente").attr("disabled", false);
+				}
+			});
+		} else {
+			alert('As senhas devem ser iguais!')
+			return false;
+		}
+	}
+});
+	
+</script>
+</body>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>Tattools - Ordens de Servi&ccedil;o</title>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body th:background="@{/img/backgroundall.png}">
+<div class="container" align="center">
+<br>
+<a th:href=@{novaOS} style="font-size: 12px;" class="waves-effect waves-light grey darken-3 lighten-1 btn-small"><i class="material-icons left">attach_money</i>Nova OS</a>
+<br><br>
+<label style="font-weight: bold;">Quantidade de OS: </label> <label style="font-weight: bold;" th:text="${quantidadeOS}"></label>
+<br>
+<label style="font-weight: bold;">Valor Total: </label><label style="font-weight: bold;" th:text="${valorTotalOSs} + ' R$'"></label>
+</div>
+<br>
+<form id="formBuscaOS" action="buscaOS" class="container" method="post">
+<input oninput="this.value = this.value.toUpperCase()" type="text" style="font-size: 12px; font-weight: bold; color: #737373;" id="nOS" name="nOS" placeholder="Digite o N&deg; da OS"/>
+<a onclick="buscarAgora()" style="font-size: 12px;" class="waves-effect waves-light grey darken-3 lighten-1 btn"><i class="material-icons left">search</i>Buscar</a>
+<a th:href=@{ordemServico} style="font-size: 12px;" class="waves-effect waves-light grey darken-3 lighten-1 btn"><i class="material-icons left">refresh</i>Limpar</a>
+</form>
+<br><br>
+<table class="container">
+<thead>
+<tr style="font-size: 12px;">
+<th>Data Cadastro</th>
+<th>N&deg; OS</th>
+<th>Usu&aacute;rio</th>
+<th>Cliente</th>
+<th>Descri&ccedil;&atilde;o</th>
+<th>Valor Total</th>
+<th>Mais</th>
+<th>Financeiro</th>
+</tr>
+</thead>
+<tbody style="font-size: 12px;">
+<tr th:each="ordemServico : ${lsOrdemServico}">
+<td style="font-style: italic;"><span th:text="${#dates.format(ordemServico.dataCadastro, 'dd/MM/yyyy')}"></span></td>
+<td style="font-weight: bold;"><span th:text="${ordemServico.ordemServicoId}"></span></td>
+<td style="font-weight: bold;"><span th:text="${ordemServico.usuario.nome}"></span></td>
+<td style="font-weight: bold;"><span th:text="${ordemServico.cliente.nome}"></span></td>
+<td style="font-weight: bold;"><span th:text="${ordemServico.descricao}"></span></td>
+<td><span th:text="${ordemServico.valorTotal}"></span></td>
+<td><a th:href="${(#mvc.url('OSC#detalhesOS').arg(0, ordemServico.ordemServicoId)).build()}"><i class="small material-icons">attach_file</i></a></td>
+<td><a th:href="${(#mvc.url('GFC#detalhesGestaoFinanceiraOS').arg(0, ordemServico.ordemServicoId)).build()}"><i class="small material-icons">attach_money</i></a></td>
+</tr>
+</tbody>
+</table>
+<br>
+<div class="container" align="center">
+	<div th:if="${searchOS ne true && lsOrdemServico.totalPages != 1}">
+		<ul class="pagination">
+			<li th:class="${lsOrdemServico.number == 0} ? disabled"><a
+				class="pageLink"
+				th:href="@{/ordemServico(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+			</li>
+			<li th:class="${lsOrdemServico.number == 0} ? disabled"><a
+				class="pageLink"
+				th:href="@{/ordemServico(pageSize=${selectedPageSize}, page=${lsOrdemServico.number})}">&larr;</a>
+			</li>
+			<li
+				th:class="${lsOrdemServico.number == (page - 1)} ? 'active pointer-disabled'"
+				th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+				<a class="pageLink"
+				th:href="@{/ordemServico(pageSize=${selectedPageSize}, page=${page})}"
+				th:text="${page}"></a>
+			</li>
+			<li
+				th:class="${lsOrdemServico.number + 1 == lsOrdemServico.totalPages} ? disabled">
+				<a class="pageLink"
+				th:href="@{/ordemServico(pageSize=${selectedPageSize}, page=${lsOrdemServico.number + 2})}">&rarr;</a>
+			</li>
+			<li
+				th:class="${lsOrdemServico.number + 1 == lsOrdemServico.totalPages} ? disabled">
+				<a class="pageLink"
+				th:href="@{/ordemServico(pageSize=${selectedPageSize}, page=${lsOrdemServico.totalPages})}">&raquo;</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<script>
+function buscarAgora() {document.getElementById("formBuscaOS").submit();}
+</script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script>
+$(document).ready(function(){
+	changePageAndSize();
+	$('.dropdown-trigger').dropdown();
+	$('select').formSelect();
+});
+</script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	function changePageAndSize() {
+		$('#pageSizeSelect').change(function(evt) {window.location.replace("/tattools/ordemServico?pageSize=" + this.value + "&page=1");});}
+	/*]]>*/
+</script>
+</body>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</html>

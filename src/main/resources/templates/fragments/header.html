@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<header>
+<nav>
+  <div class="nav-wrapper" style="background-color:	#000000;">
+    <a th:href="@{/index}"><label style="font-size: 45px; font-weight: lighter; color: white;">&nbsp;Tattools</label><label style="font-size: 16px; color: white;">_premium.manager</label></a>
+    <label style="font-size: 12px; color: white;">:&nbsp;Ol&aacute;&nbsp;<th:label style="font-size: 15px; font-style: italic; color: white;" id="usuarioLogado" th:text="${usuarioLogado.nome} + ' [ ' + ${usuarioLogado.tipoUsuario.nomeTipo} + ' ] '"/></label>
+    <ul class="right ">
+      <li><a th:href="@{/index}" class="waves-effect waves-light grey darken-3 lighten-1 btn-small"><i class="material-icons left">home</i>Home</a></li>
+      <li><a class='waves-effect waves-light grey darken-3 lighten-1 btn-small dropdown-trigger' data-target='dropdownMore'><i class="material-icons left">import_export</i>Mais</a></li>
+    </ul>
+  </div>
+</nav>
+<ul id='dropdownMore' class='dropdown-content'>
+	<li th:if="${usuarioLogado.login eq 'admin' && usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}"><a th:href="@{/configuracao}"><i class="material-icons">device_hub</i><label style="font-size: 10px;">Configura&ccedil;&otilde;es</label></a></li>
+	<li class="divider" tabindex="-1"></li>
+	<li th:if="${usuarioLogado.login eq 'admin' || usuarioLogado.login eq 'master' && usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}"><a th:href="@{/financas}"><i class="material-icons">dashboard</i><label style="font-size: 10px;">Finan&ccedil;as</label></a></li>
+	<li><a th:href="${(#mvc.url('UC#detalhesUsuario').arg(0, usuarioLogado.usuarioId)).build()}"><i class="material-icons">launch</i><label style="font-size: 10px;">Conta</label></a></li>
+	<li><a th:href="@{/logout}"><i class="material-icons">clear</i><label style="font-size: 10px;">Desconectar</label></a></li>
+</ul>
+</header>
+</html>

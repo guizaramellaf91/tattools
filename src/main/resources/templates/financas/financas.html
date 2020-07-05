@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>Tattools - Finan&ccedil;as</title>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body th:background="@{/img/backgroundall.png}">
+<div class="container" align="center">
+<br>
+<label style="font-weight: bold; font-size: 20px;">Controle e Gest&atilde;o de Finan&ccedil;as</label>
+<br><br><br>
+<div class="row">
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${administradoresCadastrados}" type="text" required disabled> 
+		<label style="font-size: 12px;">Administradores Cadastrados</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${tatuadoresCadastrados}" type="text" required disabled> 
+		<label style="font-size: 12px;">Tatuadores Cadastrados</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${osValidas}" type="text" required disabled> 
+		<label style="font-size: 12px;">Quantidade OS v&aacute;lidas</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${osInvalidas}" type="text" required disabled> 
+		<label style="font-size: 12px;">Quantidade OS inv&aacute;lidas</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${financeirosValidos}" type="text" required disabled> 
+		<label style="font-size: 12px;">Registros Financeiros v&aacute;lidos</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${financeirosInvalidos}" type="text" required disabled> 
+		<label style="font-size: 12px;">Registros Financeiros inv&aacute;lidos</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${clientesCadastrados}" type="text" required disabled> 
+		<label style="font-size: 12px;">Clientes Cadastrados</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${enderecosCadastrados}" type="text" required disabled> 
+		<label style="font-size: 12px;">Endere&ccedil;os Cadastrados</label>
+	</div>
+    <div class="input-field col s12"></div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalGestaoFinanceiraValidas ne null ? valorTotalGestaoFinanceiraValidas : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL R$:</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalStudioValidos ne null ? valorTotalStudioValidos : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL STUDIO R$:</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalTatuadorValidos ne null ? valorTotalTatuadorValidos : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL TATUADOR R$:</label>
+	</div>
+	<div class="input-field col s12"></div>
+	<div class="input-field col s6"></div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalReceberValidos ne null ? valorTotalReceberValidos : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL &Agrave; RECEBER R$:</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalStudioReceberValidos ne null ? valorTotalStudioReceberValidos : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL STUDIO &Agrave; RECEBER R$:</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalTatuadorReceberValidos ne null ? valorTotalTatuadorReceberValidos : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL TATUADOR &Agrave; RECEBER R$:</label>
+	</div>
+	<div class="input-field col s12"></div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalRecebidoValidos ne null ? valorTotalRecebidoValidos : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL RECEBIDO R$:</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalStudioRecebidoValidos ne null ? valorTotalStudioRecebidoValidos : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL STUDIO RECEBIDO R$:</label>
+	</div>
+	<div class="input-field col s2">
+		<input style="font-size: 12px; font-weight: bold;" th:value="${valorTotalTatuadorRecebidoValidos ne null ? valorTotalTatuadorRecebidoValidos : '0.00'}" type="text" required disabled> 
+		<label style="font-size: 12px;">TOTAL TATUADOR RECEBIDO R$:</label>
+	</div>
+	<div class="input-field col s6"></div>
+</div>
+<br>
+<label style="font-size: 14px;">ORDENS DE SERVI&Ccedil;O</label>
+<br><br>
+<div class="container" align="center">
+	<div th:if="${searchOS ne true && lsOrdemServico.totalPages != 1}">
+		<ul class="pagination">
+			<li th:class="${lsOrdemServico.number == 0} ? disabled"><a
+				class="pageLink"
+				th:href="@{/financas(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+			</li>
+			<li th:class="${lsOrdemServico.number == 0} ? disabled"><a
+				class="pageLink"
+				th:href="@{/financas(pageSize=${selectedPageSize}, page=${lsOrdemServico.number})}">&larr;</a>
+			</li>
+			<li
+				th:class="${lsOrdemServico.number == (page - 1)} ? 'active pointer-disabled'"
+				th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+				<a class="pageLink"
+				th:href="@{/financas(pageSize=${selectedPageSize}, page=${page})}"
+				th:text="${page}"></a>
+			</li>
+			<li
+				th:class="${lsOrdemServico.number + 1 == lsOrdemServico.totalPages} ? disabled">
+				<a class="pageLink"
+				th:href="@{/financas(pageSize=${selectedPageSize}, page=${lsOrdemServico.number + 2})}">&rarr;</a>
+			</li>
+			<li
+				th:class="${lsOrdemServico.number + 1 == lsOrdemServico.totalPages} ? disabled">
+				<a class="pageLink"
+				th:href="@{/financas(pageSize=${selectedPageSize}, page=${lsOrdemServico.totalPages})}">&raquo;</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<table>
+<thead>
+<tr style="font-size: 10px;">
+<th>Data Cadastro</th>
+<th>N&deg; OS</th>
+<th>Usu&aacute;rio</th>
+<th>Cliente</th>
+<th>Descri&ccedil;&atilde;o</th>
+<th>Valor Total</th>
+</tr>
+</thead>
+<tbody style="font-size: 10px;">
+<tr th:each="ordemServico : ${lsOrdemServico}">
+<td style="font-style: italic;"><span th:text="${#dates.format(ordemServico.dataCadastro, 'dd/MM/yyyy')}"></span></td>
+<td style="font-weight: bold;"><span th:text="${ordemServico.ordemServicoId}"></span></td>
+<td style="font-weight: bold;"><span th:text="${ordemServico.usuario.nome}"></span></td>
+<td style="font-weight: bold;"><span th:text="${ordemServico.cliente.nome}"></span></td>
+<td style="font-weight: bold;"><span th:text="${ordemServico.descricao}"></span></td>
+<td><span th:text="${ordemServico.valorTotal}"></span></td>
+</tr>
+</tbody>
+</table>
+<br><br>
+<label style="font-size: 14px;">REGISTROS FINANCEIROS</label>
+<br><br>
+<div class="container" align="center">
+	<div th:if="${searchOS ne true && lsGestaoFinanceira.totalPages != 1}">
+		<ul class="pagination">
+			<li th:class="${lsGestaoFinanceira.number == 0} ? disabled"><a
+				class="pageLink"
+				th:href="@{/financas(pageSizeGestaoFinanceira=${selectedPageSizeGestaoFinanceira}, page=1)}">&laquo;</a>
+			</li>
+			<li th:class="${lsGestaoFinanceira.number == 0} ? disabled"><a
+				class="pageLink"
+				th:href="@{/financas(pageSizeGestaoFinanceira=${selectedPageSizeGestaoFinanceira}, page=${lsGestaoFinanceira.number})}">&larr;</a>
+			</li>
+			<li
+				th:class="${lsGestaoFinanceira.number == (page - 1)} ? 'active pointer-disabled'"
+				th:each="page : ${#numbers.sequence(pagerGestaoFinanceira.startPage, pagerGestaoFinanceira.endPage)}">
+				<a class="pageLink"
+				th:href="@{/financas(pageSizeGestaoFinanceira=${selectedPageSizeGestaoFinanceira}, page=${page})}"
+				th:text="${page}"></a>
+			</li>
+			<li
+				th:class="${lsGestaoFinanceira.number + 1 == lsGestaoFinanceira.totalPages} ? disabled">
+				<a class="pageLink"
+				th:href="@{/financas(pageSizeGestaoFinanceira=${selectedPageSizeGestaoFinanceira}, page=${lsGestaoFinanceira.number + 2})}">&rarr;</a>
+			</li>
+			<li
+				th:class="${lsGestaoFinanceira.number + 1 == lsGestaoFinanceira.totalPages} ? disabled">
+				<a class="pageLink"
+				th:href="@{/financas(pageSizeGestaoFinanceira=${selectedPageSizeGestaoFinanceira}, page=${lsGestaoFinanceira.totalPages})}">&raquo;</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<table>
+<thead>
+<tr style="font-size: 10px;">
+<th>Data Cadastro</th>
+<th>N&deg; Fin.</th>
+<th>Usu&aacute;rio</th>
+<th>Cliente</th>
+<th>Descri&ccedil;&atilde;o</th>
+<th>Valor Total</th>
+</tr>
+</thead>
+<tbody style="font-size: 10px;">
+<tr th:each="gestaoFinanceira : ${lsGestaoFinanceira}">
+<td style="font-style: italic;"><span th:text="${#dates.format(gestaoFinanceira.dataCadastro, 'dd/MM/yyyy')}"></span></td>
+<td style="font-weight: bold;"><span th:text="${gestaoFinanceira.gestaoFinanceiraId}"></span></td>
+<td style="font-weight: bold;"><span th:text="${gestaoFinanceira.usuario.nome}"></span></td>
+<td style="font-weight: bold;"><span th:text="${gestaoFinanceira.ordemServico.cliente.nome}"></span></td>
+<td style="font-weight: bold;"><span th:text="${gestaoFinanceira.descricao}"></span></td>
+<td><span th:text="${gestaoFinanceira.valorTotal}"></span></td>
+</tr>
+</tbody>
+</table>
+<br>
+</div>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+	$('.dropdown-trigger').dropdown();
+	$('select').formSelect();
+	
+});
+</script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	function changePageAndSize() {
+		$('#pageSizeSelect').change(function(evt) {window.location.replace("/tattools/financas?pageSize=" + this.value + "&page=1");});}
+	/*]]>*/
+</script>
+</body>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</html>

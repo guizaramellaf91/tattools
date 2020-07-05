@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<title>Tattools - Produto / Servi&ccedil;o</title>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body th:background="@{/img/backgroundall.png}">
+<div class="container" align="center">
+<br>
+<a th:href=@{#modalNovoProduto} style="font-size: 12px;" class="waves-effect waves-light grey darken-1 lighten-1 btn-small modal-trigger"><i class="material-icons left">add_shopping_cart</i>Novo Produto</a>
+<a th:href=@{#modalNovoServico} style="font-size: 12px;" class="waves-effect waves-light grey darken-1 lighten-1 btn-small modal-trigger"><i class="material-icons left">add_shopping_cart</i>Novo Servi&ccedil;o</a>
+<br><br>
+<label style="font-weight: bold;">N&deg; Produtos:</label> <label style="font-weight: bold;" th:text="${quantidadeProdutos}"></label>
+<br>
+<label style="font-weight: bold;">N&deg; Servi&ccedil;os:</label> <label style="font-weight: bold;" th:text="${quantidadeServicos}"></label>
+</div>
+<br>
+<form id="formBuscaProduto" action="buscarCliente" class="container" method="post">
+<input oninput="this.value = this.value.toUpperCase()" type="text" style="font-size: 12px; font-weight: bold; color: #737373;" id="nomeProdutoBusca" name="nomeProdutoBusca" placeholder="Digite o nome do produto"/>
+<a onclick="#" style="font-size: 12px;" class="waves-effect waves-light grey darken-1 lighten-1 btn"><i class="material-icons left">search</i>Buscar</a>
+<a href="#" style="font-size: 12px;" class="waves-effect waves-light grey darken-1 lighten-1 btn"><i class="material-icons left">refresh</i>Limpar</a>
+</form>
+<br><br>
+<div align="center"><label style="font-size: 25px; font-weight: lighter;">Produto(s)</label></div>
+<br><br>
+<table class="container">
+<thead>
+<tr style="font-size: 12px;">
+<th>Descri&ccedil;&atilde;o</th>
+<th>Status</th>
+<th>Observa&ccedil;&atilde;o</th>
+<th>Valor</th>
+<th>Detalhes</th>
+</tr>
+</thead>
+<tbody style="font-size: 12px;">
+<tr th:each="produto : ${lsProdutos}">
+<td style="font-style: italic;"><span th:text="${produto.descricao}"></span></td>
+<td style="font-style: italic;"><span th:text="${produto.ativo eq true ? 'Ativo' : 'Inativo'}"></span></td>
+<td style="font-style: italic;"><span th:text="${produto.observacao}"></span></td>
+<td style="font-style: italic;"><span th:text="${produto.preco}"></span></td>
+<td><a th:href="${(#mvc.url('PSC#detalhesProduto').arg(0, produto.produtoId)).build()}"><i class="small material-icons">local_library</i></a></td>
+</tr>
+</tbody>
+</table>
+<br><br><br><br>
+<form id="formBusca" action="buscarCliente" class="container" method="post">
+<input oninput="this.value = this.value.toUpperCase()" type="text" style="font-size: 12px; font-weight: bold; color: #737373;" id="nomeServicoBusca" name="nomeServicoBusca" placeholder="Digite o nome do servi&ccedil;o"/>
+<a onclick="#" style="font-size: 12px;" class="waves-effect waves-light grey darken-1 lighten-1 btn"><i class="material-icons left">search</i>Buscar</a>
+<a href="#" style="font-size: 12px;" class="waves-effect waves-light grey darken-1 lighten-1 btn"><i class="material-icons left">refresh</i>Limpar</a>
+</form>
+<br><br>
+<div align="center"><label style="font-size: 25px; font-weight: lighter;">Servi&ccedil;o(s)</label></div>
+<br><br>
+<table class="container">
+<thead>
+<tr style="font-size: 12px;">
+<th>Descri&ccedil;&atilde;o</th>
+<th>Status</th>
+<th>Observa&ccedil;&atilde;o</th>
+<th>Detalhes</th>
+</tr>
+</thead>
+<tbody style="font-size: 12px;">
+<tr th:each="servico : ${lsServicos}">
+<td style="font-style: italic;"><span th:text="${servico.descricao}"></span></td>
+<td style="font-style: italic;"><span th:text="${servico.ativo eq true ? 'Ativo' : 'Inativo'}"></span></td>
+<td style="font-style: italic;"><span th:text="${servico.observacao}"></span></td>
+<td><a th:href="${(#mvc.url('PSC#detalhesServico').arg(0, servico.servicoId)).build()}"><i class="small material-icons">local_library</i></a></td>
+</tr>
+</tbody>
+</table>
+<div class="container" align="center">
+	<div th:if="${searchCliente ne true && lsProdutos.totalPages != 1}">
+		<ul class="pagination">
+			<li th:class="${lsProdutos.number == 0} ? disabled"><a
+				class="pageLink"
+				th:href="@{/clientes(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+			</li>
+			<li th:class="${lsProdutos.number == 0} ? disabled"><a
+				class="pageLink"
+				th:href="@{/clientes(pageSize=${selectedPageSize}, page=${lsProdutos.number})}">&larr;</a>
+			</li>
+			<li
+				th:class="${lsProdutos.number == (page - 1)} ? 'active pointer-disabled'"
+				th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+				<a class="pageLink"
+				th:href="@{/clientes(pageSize=${selectedPageSize}, page=${page})}"
+				th:text="${page}"></a>
+			</li>
+			<li
+				th:class="${lsProdutos.number + 1 == lsProdutos.totalPages} ? disabled">
+				<a class="pageLink"
+				th:href="@{/clientes(pageSize=${selectedPageSize}, page=${lsProdutos.number + 2})}">&rarr;</a>
+			</li>
+			<li
+				th:class="${lsProdutos.number + 1 == lsProdutos.totalPages} ? disabled">
+				<a class="pageLink"
+				th:href="@{/clientes(pageSize=${selectedPageSize}, page=${lsProdutos.totalPages})}">&raquo;</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="modalNovoProduto" class="modal">
+		<div class="modal-content" align="center">
+		<div align="center"><label style="font-size: 25px; font-weight: lighter;">Novo Produto</label></div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" type="text"
+						id="novaDescricaoProduto" placeholder="Descri&ccedil;&atilde;o" required>
+				</div>
+				<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" type="text"
+						id="novaObservacaoProduto" placeholder="Observa&ccedil;&atilde;o" required>
+				</div>
+				<div class="input-field col s12">
+					<input style="font-size: 12px; font-weight: bold;" type="text"
+						id="novoPrecoProduto" placeholder="Pre&ccedil;o" required>
+				</div>
+			</div>
+			<br> <a id="btnNovoProduto" style="font-size: 9px;"
+				class="waves-effect waves-light grey darken-1 lighten-1 btn-small"><i
+				class="material-icons left">save</i>INSERIR</a>
+		</div>
+</div>
+
+<div id="modalNovoServico" class="modal">
+		<div class="modal-content" align="center">
+		<div align="center"><label style="font-size: 25px; font-weight: lighter;">Novo Servi&ccedil;o</label></div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" type="text"
+						id="novaDescricaoServico" placeholder="Descri&ccedil;&atilde;o" required>
+				</div>
+				<div class="input-field col s6">
+					<input style="font-size: 12px; font-weight: bold;" type="text"
+						id="novaObservacaoServico" placeholder="Observa&ccedil;&atilde;o" required>
+				</div>
+			</div>
+			<br> <a id="btnNovoServico" style="font-size: 9px;"
+				class="waves-effect waves-light grey darken-1 lighten-1 btn-small"><i
+				class="material-icons left">save</i>INSERIR</a>
+		</div>
+</div>
+
+<script>
+function buscarAgora() {document.getElementById("formBusca").submit();}
+</script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+	changePageAndSize();
+	$('.dropdown-trigger').dropdown();
+	$('.modal').modal();
+	$('select').formSelect();
+	
+	$('#novoPrecoProduto').mask("#,##000.00", {reverse: true});
+});
+
+$("#btnNovoProduto").click(function() {
+	
+	$.ajax({
+		type : 'POST',
+		url : 'novoProduto',
+		data : {
+			'ativo' : true,
+			'dataCadastro' : new Date(),
+			'dataAlteracao' : new Date(),
+			'descricao' : $('#novaDescricaoProduto').val(),
+			'observacao' : $('#novaObservacaoProduto').val(),
+			'preco' : $('#novoPrecoProduto').val(),		
+		},
+		success : function(data) {
+			location.href = './produtoServico';
+		},
+		error : function() {
+			alert("Ocorreu um erro ao cadastrar o produto.");
+			location.href = './ordemServico';
+		}
+	});
+});
+
+$("#btnNovoServico").click(function() {
+	
+	$.ajax({
+		type : 'POST',
+		url : 'novoServico',
+		data : {
+			'ativo' : true,
+			'dataCadastro' : new Date(),
+			'dataAlteracao' : new Date(),
+			'descricao' : $('#novaDescricaoServico').val(),
+			'observacao' : $('#novaObservacaoServico').val(),		
+		},
+		success : function(data) {
+			location.href = './produtoServico';
+		},
+		error : function() {
+			alert("Ocorreu um erro ao cadastrar o Servi&ccedil;o.");
+			location.href = './ordemServico';
+		}
+	});
+	
+});
+
+</script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	function changePageAndSize() {
+		$('#pageSizeSelect').change(function(evt) {window.location.replace("/tattools/produtoServico?pageSize=" + this.value + "&page=1");});}
+	/*]]>*/
+</script>
+</body>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</html>

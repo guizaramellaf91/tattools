@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>Tattools - Dados do Cliente</title>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body th:background="@{/img/backgroundall.png}">
+<div th:each="cliente : ${cliente}" class="container">
+  <br>
+  <a th:if="${usuarioLogado.login != null}" th:href="@{/clientes?pageSize={1}&page={2}(1=${pageSizeNavi},2=${pageNavi})}" class="waves-effect waves-light grey darken-1 lighten-1 btn-small"><i class="material-icons left">arrow_back</i>Voltar</a>
+  <a th:unless="${usuarioLogado.login != null}" th:href=@{/clientes} class="waves-effect waves-light grey darken-1 lighten-1 btn-small"><i class="material-icons left">arrow_back</i>Voltar</a>
+  <br><br><br>
+    <form class="col s12" method="post">
+      <div class="row">
+        <input type="hidden" th:field="${cliente.clienteId}"/>
+        <div class="input-field col s3">
+          <input style="font-size: 12px;" id="dataCadastro" name="nomeCliente" th:value="${#dates.format(cliente.dataCadastro, 'dd/MM/yyyy HH:mm')}" type="text" required disabled>
+          <label for="dataCadastro">Cadastro</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 12px;" id="dataAlteracao" name="nomeCliente" th:value="${#dates.format(cliente.dataModificacao, 'dd/MM/yyyy HH:mm')}" type="text" required disabled>
+          <label for="dataAlteracao">Altera&ccedil;&atilde;o</label>
+        </div>
+        <div class="input-field col s5">
+          <input oninput="this.value = this.value.toUpperCase()" style="font-size: 12px; font-weight: bold;" id="nome" name="nomeCliente" th:value="${cliente.nome}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Nome</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="quantidadeOS" name="quantidadeOS" th:value="${quantidadeOS}" type="text" disabled>
+          <label for="quantidadeOS">N&deg; OS</label>
+        </div>
+  	    <div class="input-field col s3">
+          <input oninput="this.value = this.value.toUpperCase()" style="font-size: 12px; font-weight: bold;" id="nome" name="cpf" th:value="${cliente.cpf}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">CPF</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="nascimento" name="nascimento" th:value="${#dates.format(cliente.dataNascimento, 'dd/MM/yyyy')}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Nascimento</label>
+        </div>
+        <div class="input-field col s3">
+          <input oninput="this.value = this.value.toUpperCase()" style="font-size: 12px; font-weight: bold;" id="email" name="email" th:value="${cliente.email}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">E-mail</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="instagram" th:value="${cliente.instagram}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Instagram</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="celular" th:value="${cliente.celular}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Celular</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="nomeCliente" th:value="${cliente.telefone}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Telefone</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="nomeCliente" th:value="${cliente.tipoSangue}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Tipo Sangue</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="nomeCliente" th:value="${cliente.autorizaFotos eq true ? 'Sim' : 'N&atilde;o'}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Autoriza Fotos</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="nomeCliente" th:value="${cliente.possuiAlergias eq true ? 'Sim' : 'N&atilde;o'}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Alergias?</label>
+        </div>   
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="nomeCliente" th:value="${cliente.possuiDiabetes eq true ? 'Sim' : 'N&atilde;o'}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Diabetes?</label>
+        </div>   
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="nomeCliente" th:value="${cliente.possuiHepatite eq true ? 'Sim' : 'N&atilde;o'}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Hepatite?</label>
+        </div> 
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="nome" name="nomeCliente" th:value="${cliente.tomaAnticoagulante eq true ? 'Sim' : 'N&atilde;o'}" type="text" required th:disabled="${usuarioLogado.tipoUsuario.nomeTipo ne 'STUDIO'}">
+          <label for="nome">Anticoagulante?</label>
+        </div> 
+	  </div>
+	  <label style="font-size: 25px; font-weight: lighter;">Endere&ccedil;o(s)</label>
+	  <table class="responsive-table" style="font-size: 12px; overflow: auto;">
+		    <thead>
+		        <tr>
+		        	<th>Rua</th>
+		        	<th>Bairro</th>
+		        	<th>Cidade</th>
+		        	<th>Estado</th>
+		        	<th>CEP</th>
+		        	<th>Pa&iacute;s</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr>
+		        	<td style="font-weight: bold;"><span th:text="${cliente.endereco.rua}"></span></td>
+		        	<td style="font-weight: bold;"><span th:text="${cliente.endereco.bairro}"></span></td>
+		        	<td style="font-weight: bold;"><span th:text="${cliente.endereco.cidade}"></span></td>
+		        	<td style="font-weight: bold;"><span th:text="${cliente.endereco.estado}"></span></td>
+		        	<td style="font-weight: bold;"><span th:text="${cliente.endereco.cep}"></span></td>
+		        	<td style="font-weight: bold;"><span th:text="${cliente.endereco.pais}"></span></td>
+		        </tr>
+		    </tbody>
+		</table>
+		<br><br>    
+    </form>    
+    <a id="btnSubmit" th:href="@{#modalDetalhesCliente}" th:if="${usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}" class="waves-effect waves-light grey darken-1 lighten-1 btn-small modal-trigger"><i class="material-icons left">cached</i>Atualizar Cadastro</a>   
+    <a th:if="${usuarioLogado.login eq 'admin' && usuarioLogado.tipoUsuario.nomeTipo eq 'STUDIO'}" th:href="@{#modalDeletarCliente}" class="waves-effect waves-light grey darken-1 lighten-1 btn-small modal-trigger"><i class="material-icons left">delete</i>Excluir</a>
+</div>     
+   
+<div id="modalDetalhesCliente" class="modal">
+  <div class="modal-content" align="center">
+    <h4>Altera&ccedil;&atilde;o de Cliente</h4>
+    <p style="font-size: 14px;" th:text="'Ol&aacute; ' + ${usuarioLogado.nome} + ', deseja realmente alterar o registro?'"></p>
+    <a id="btnAlterar" class="modal-close waves-effect waves-green btn-flat">Sim</a>
+    <a class="modal-close waves-effect waves-red btn-flat">N&atilde;o</a>
+  </div>
+</div>
+  
+<div id="modalDeletarCliente" class="modal">
+  <div class="modal-content" align="center">
+    <h4>Exclus&atilde;o de Cliente</h4>
+    <p style="font-size: 14px;" th:text="'Ol&aacute; ' + ${usuarioLogado.nome} + ', deseja realmente excluir o registro?'"></p>
+    <a id="btnDeletar" class="modal-close waves-effect waves-green btn-flat">Sim</a>
+    <a class="modal-close waves-effect waves-red btn-flat">N&atilde;o</a>
+  </div>
+  </div>
+
+<script type="text/javascript" src="../js/materialize.min.js"></script>
+<script>
+$(document).ready(function(){
+	$('.modal').modal();
+	$('.dropdown-trigger').dropdown();
+});
+</script>
+<script>
+
+$("#btnAlterar").click(function() {
+	
+	if ($('#nome').val() && $('#cpf').val() && $('#dataNascimento').val() && $('#email').val() && $('#celular').val()) {
+
+			$('#btnAlterar').attr('disabled', 'disabled');
+			
+			if(!$('#autorizaFotos').prop('checked')){
+				$('#autorizaFotos').val('false');
+			}
+			if(!$('#possuiAlergias').prop('checked')){
+				$('#possuiAlergias').val('false');
+			}
+			if(!$('#possuiDiabetes').prop('checked')){
+				$('#possuiDiabetes').val('false');
+			}
+			if(!$('#possuiHepatite').prop('checked')){
+				$('#possuiHepatite').val('false');
+			}
+			if(!$('#tomaAnticoagulante').prop('checked')){
+				$('#tomaAnticoagulante').val('false');
+			}
+
+			$.ajax({
+				type : 'POST',
+				url : 'alterarCliente',
+				data : {
+					'nome' : $('#nome').val(),
+					'cpf' : $('#cpf').val(),
+					'dataNascimento' : $('#dataNascimento').val(),
+					'email' : $('#email').val(),
+					'instagram' : $('#instagram').val(),
+					'celular' : $('#celular').val(),
+					'telefone' : $('#telefone').val(),
+					'tipoSangue' : $('#tipoSangue').val(),
+					'autorizaFotos' : $('#autorizaFotos').val(),
+					'possuiAlergias' : $('#possuiAlergias').val(),
+					'possuiDiabetes' : $('#possuiDiabetes').val(),
+					'possuiHepatite' : $('#possuiHepatite').val(),
+					'tomaAnticoagulante' : $('#tomaAnticoagulante').val(),
+					
+					'rua' : $('#rua').val(),
+					'bairro' : $('#bairro').val(),
+					'cidade' : $('#cidade').val(),
+					'estado' : $('#estado').val(),
+					'cep' : $('#cep').val(),
+					'pais' : $('#pais').val(),
+				},
+				success : function(data) {
+					location.href = './clientes';
+				},
+				error : function() {
+					alert("Ocorreu um erro ao cadastrar o cliente.");
+				}
+			});
+		} else {
+			alert('Preencha o produto para prosseguir!');
+			return;
+		}
+});
+$("#btnDeletar").click(function() {	
+	$.ajax({
+		type : 'GET',
+		contentType : "application/json; charset=utf-8",
+		url : '../deletarCliente/' + $('#clienteId').val(),
+		success : function(data) {
+			location.href = "../clientes";
+		}
+	});
+});
+</script>
+</body>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</html>

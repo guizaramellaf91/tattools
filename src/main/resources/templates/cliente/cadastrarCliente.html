@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="./css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<title>Tattools - Cadastrar Cliente</title>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body th:background="@{/img/backgroundall.png}">
+<div class="container">
+  <br>
+  <a th:href="@{clientes}" class="waves-effect waves-light grey darken-1 lighten-1 btn-small"><i class="material-icons left">arrow_back</i>Voltar</a>
+  <br><br>
+    <form class="col s12" method="post">
+      <div class="row">
+        <div class="input-field col s5">
+          <input oninput="this.value = this.value.toUpperCase()" style="font-size: 12px; font-weight: bold;" id="nome" name="nome" type="text" required>
+          <label for="nome">Nome</label>
+        </div>
+  	    <div class="input-field col s2">
+          <input oninput="this.value = this.value.toUpperCase()" style="font-size: 12px; font-weight: bold;" id="cpf" name="cpf" type="text" required>
+          <label for="nome">CPF</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="dataNascimento" name="dataNascimento" type="date" required>
+          <label for="nome">Nascimento</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="email" name="email" type="text" required>
+          <label for="nome">E-mail</label>
+        </div>
+        <div class="input-field col s5">
+          <input style="font-size: 12px; font-weight: bold;" id="instagran" name="instagran" type="text" required>
+          <label for="nome">Instagran</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="celular" name="celular" type="text" required>
+          <label for="nome">Celular</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="telefone" name="telefone" type="text" required>
+          <label for="nome">Telefone</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="tipoSangue" name="tipoSangue" type="text" required>
+          <label for="nome">Tipo Sangue</label>
+        </div>
+		<div class="input-field col s12 switch">
+			<label>Autoriza Fotos:<input type="checkbox" id="autorizaFotos" name="autorizaFotos"> <span
+				class="lever"></span> Sim
+			</label>
+		</div>
+		<div class="input-field col s12 switch">
+			<label>Alergias?<input type="checkbox" id="possuiAlergias" name="possuiAlergias"> <span
+				class="lever"></span> Sim
+			</label>
+		</div>
+		<div class="input-field col s12 switch">
+			<label>Diabetes?<input type="checkbox" id="possuiDiabetes" name="possuiDiabetes"> <span
+				class="lever"></span> Sim
+			</label>
+		</div>	
+		<div class="input-field col s12 switch">
+			<label>Hepatite?<input type="checkbox" id="possuiHepatite" name="possuiHepatite"> <span
+				class="lever"></span> Sim
+			</label>
+		</div>	
+		<div class="input-field col s12 switch">
+			<label>Anticoagulante?<input type="checkbox" id="tomaAnticoagulante" name="tomaAnticoagulante"> <span
+				class="lever"></span> Sim
+			</label>
+		</div>
+	  </div>
+	  <br><br>
+	  <label style="font-size: 25px; font-weight: lighter;">Endere&ccedil;o</label>	  
+      <div class="row">
+	  <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="rua" name="rua" type="text" required>
+          <label for="nome">Rua</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="bairro" name="bairro" type="text" required>
+          <label for="nome">Bairro</label>
+        </div>   
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="cidade" name="cidade" type="text" required>
+          <label for="nome">Cidade</label>
+        </div>   
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="estado" name="estado" type="text" required>
+          <label for="nome">Estado</label>
+        </div> 
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="cep" name="cep" type="text" required>
+          <label for="nome">CEP</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="pais" name="pais" type="text" required>
+          <label for="nome">Pa&iacute;s</label>
+        </div>
+        </div> 
+		<br><br>    
+    </form>    
+    <a id="btnSalvar" class="waves-effect waves-light grey darken-1 lighten-1 btn-small"><i class="material-icons left">save</i>Cadastrar</a>   
+</div>     
+   
+<script type="text/javascript" src="./js/materialize.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+	$('.dropdown-trigger').dropdown();	
+	$('#cpf').mask('999.999.999-99');
+	$('#celular').mask('(99)99999-9999');
+	$('#telefone').mask('(99)9999-9999');
+	$('#cep').mask('99999-999');
+		
+});
+
+$("#btnSalvar").click(function() {
+	
+	if ($('#nome').val()) {
+
+		$('#btnSalvar').attr('disabled', 'disabled');
+		
+		if(!$('#autorizaFotos').prop('checked')){
+			$('#autorizaFotos').val('false');
+		}
+		if(!$('#possuiAlergias').prop('checked')){
+			$('#possuiAlergias').val('false');
+		}
+		if(!$('#possuiDiabetes').prop('checked')){
+			$('#possuiDiabetes').val('false');
+		}
+		if(!$('#possuiHepatite').prop('checked')){
+			$('#possuiHepatite').val('false');
+		}
+		if(!$('#tomaAnticoagulante').prop('checked')){
+			$('#tomaAnticoagulante').val('false');
+		}
+
+		$.ajax({
+			type : 'POST',
+			url : 'cadastrarCliente',
+			data : {
+				'nome' : $('#nome').val(),
+				'cpf' : $('#cpf').val(),
+				'dataNascimento' : $('#dataNascimento').val(),
+				'email' : $('#email').val(),
+				'instagran' : $('#instagran').val(),
+				'celular' : $('#celular').val(),
+				'telefone' : $('#telefone').val(),
+				'tipoSangue' : $('#tipoSangue').val(),
+				'autorizaFotos' : $('#autorizaFotos').val(),
+				'possuiAlergias' : $('#possuiAlergias').val(),
+				'possuiDiabetes' : $('#possuiDiabetes').val(),
+				'possuiHepatite' : $('#possuiHepatite').val(),
+				'tomaAnticoagulante' : $('#tomaAnticoagulante').val(),
+				
+				'rua' : $('#rua').val(),
+				'bairro' : $('#bairro').val(),
+				'cidade' : $('#cidade').val(),
+				'estado' : $('#estado').val(),
+				'cep' : $('#cep').val(),
+				'pais' : $('#pais').val(),
+			},
+			success : function(data) {
+				location.href = './clientes';
+			},
+			error : function() {
+				alert("Ocorreu um erro ao cadastrar o cliente.");
+			}
+		});
+	} else {
+		alert('Preencha todos os dados para prosseguir!');
+		return;
+	}
+});
+</script>
+</body>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</html>

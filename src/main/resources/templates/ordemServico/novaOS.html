@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="./css/materialize.min.css" media="screen,projection" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<title>Tattools - Nova OS</title>
+</head>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<body th:background="@{/img/backgroundall.png}">
+<div class="container">
+  <br>
+  <a th:if="${usuarioLogado.login != null}" th:href="@{/ordemServico?pageSize={1}&page={2}(1=${pageSizeNavi},2=${pageNavi})}" class="waves-effect waves-light grey darken-3 lighten-1 btn-small"><i class="material-icons left">arrow_back</i>Voltar</a>
+  <a th:unless="${usuarioLogado.login != null}" th:href=@{/ordemServico} class="waves-effect waves-light grey darken-3 lighten-1 btn-small"><i class="material-icons left">arrow_back</i>Voltar</a>
+  <br><br>  
+    <form class="col s12" method="post">
+      <div class="row">
+		<div class="input-field col s8">
+			<select id="clienteId" name="clienteId" required>
+				<option disabled selected>Selecione o cliente</option>
+				<option id="adicionarNovoCliente">[ Novo Cliente ]</option>
+				<option th:each="cliente : ${lsCliente}" th:value="${cliente.clienteId}" th:text="${cliente.nome}"></option>
+			</select>
+		</div>
+		<div class="input-field col s4">
+			<input style="font-size: 12px; font-weight: bold;" id="dataCadastro" name="dataCadastro" type="date" required>
+          	<label for="nome">Data Cadastro OS</label>
+		</div>
+		<div class="input-field col s6" style="font-size: 9px;">
+			<select style="font-size: 9px;" id="produtoId" name="produtoId" required>
+				<option style="font-size: 9px;" selected>Selecione o produto</option>
+				<option style="font-size: 9px;" th:each="produto : ${lsProduto}" th:value="${produto.produtoId}" th:valor="${produto.preco}" th:text="${produto.descricao + ' - ' + produto.preco} + ' R$'"></option>
+			</select>
+		</div>
+		<div class="input-field col s6" style="font-size: 9px;">
+			<select style="font-size: 9px;" id="servicoId" name="servicoId" required>
+				<option style="font-size: 9px;" selected>Selecione o servi&ccedil;o</option>
+				<option style="font-size: 9px;" th:each="servico : ${lsServico}" th:value="${servico.servicoId}" th:text="${servico.descricao}"></option>
+			</select>
+		</div>
+		<div class="input-field col s4">
+          <input oninput="this.value = this.value.toUpperCase()" style="font-size: 12px; font-weight: bold;" id="descricao" name="descricao" type="text">
+          <label for="nome">Descri&ccedil;&atilde;o</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="observacao" name="observacao" type="text">
+          <label for="observacao">Observa&ccedil;&atilde;o</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="valorServico" name="valorServico" placeholder="Valor Servi&ccedil;o" type="text" disabled>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="valorProduto" name="valorProduto" placeholder="Valor Produto" type="text" disabled>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 14px; font-weight: bold;" id="valorTotal" name="valorTotal" placeholder="Valor Total" type="text" disabled>
+        </div>
+        <div class="input-field col s2 switch">
+			<label>Dinheiro<input type="checkbox" id="pagamentoDinheiro" name="pagamentoDinheiro"><span class="lever"></span></label>
+			<input id="totalDinheiro" style="font-size: 12px; font-weight: bold;" type="text" placeholder="0.00" disabled>			
+		</div>
+		<div class="input-field col s2 switch">
+			<label>D&eacute;bito<input type="checkbox" id="pagamentoDebito" name="pagamentoDebito"><span class="lever"></span></label>
+			<input id="totalDebito" style="font-size: 12px; font-weight: bold;" type="text" placeholder="0.00" disabled>			
+		</div>
+		<div class="input-field col s2 switch">
+			<label>Cr&eacute;dito<input type="checkbox" id="pagamentoCredito" name="pagamentoCredito"><span class="lever"></span></label>
+			<input id="totalCredito" style="font-size: 12px; font-weight: bold;" type="text" placeholder="0.00" disabled>
+		</div>
+		<div class="input-field col s2">
+			<select class="form-select" id="parcelasCredito" name="parcelasCredito">
+				<option th:each="parcela : ${parcelasUsuario}" th:value="${parcela}" th:text="${parcela}"></option>
+			</select>
+			<label>Quantidade Parcelas</label>
+		</div>
+		<div class="input-field col s4 switch">
+			<label>Saque<input type="checkbox" id="saqueTatuadorLabel" name="saqueTatuadorLabel"><span class="lever"></span></label>
+			<input id="saqueTatuador" style="font-size: 12px; font-weight: bold;" type="text" placeholder="0.00" disabled>
+		</div>
+	  </div>
+	  	<div th:if="${valorSaquePendente ne null}">
+			<label>Voc&ecirc; possui d&eacute;bito pendente no valor de</label>&nbsp;
+			<label style="font-weight: bold; font-size: 14px;" th:text="${valorSaquePendente}"></label>
+		</div>
+	  <br>
+	  <a id="btnCadastrarOS" th:href="@{#modalNovaOS}" class="waves-effect waves-light grey darken-3 lighten-1 btn-small modal-trigger"><i class="material-icons left">save</i>Cadastrar OS</a>       
+    </form>    
+</div>     
+   
+<div id="modalNovaOS" class="modal">
+  <div class="modal-content" align="center">
+    <h4>Nova Ordem de Servi&ccedil;o</h4>
+    <p style="font-size: 14px;" th:text="'Ol&aacute; ' + ${usuarioLogado.nome} + ', deseja realmente cadastrar a OS?'"></p>
+    <a id="btnSalvar" class="modal-close waves-effect waves-green btn-flat">Sim</a>
+    <a id="fecharModalConfirma" class="modal-close waves-effect waves-red btn-flat">N&atilde;o</a>
+  </div>
+</div>
+
+<div id="modalNovoCliente" class="modal">
+  <div class="modal-content" align="center">
+    <h4>Cadastrar Novo Cliente</h4>
+    <br>
+    <form class="col s12" method="post">
+      <div class="row">
+        <div class="input-field col s5">
+          <input oninput="this.value = this.value.toUpperCase()" style="font-size: 12px; font-weight: bold;" id="nome" name="nome" type="text" required>
+          <label for="nome">Nome</label>
+        </div>
+  	    <div class="input-field col s2">
+          <input oninput="this.value = this.value.toUpperCase()" style="font-size: 12px; font-weight: bold;" id="cpf" name="cpf" type="text">
+          <label for="nome">CPF</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="dataNascimento" name="dataNascimento" type="date">
+          <label for="nome">Nascimento</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="email" name="email" type="text" required>
+          <label for="nome">E-mail</label>
+        </div>
+        <div class="input-field col s5">
+          <input style="font-size: 12px; font-weight: bold;" id="instagran" name="instagran" type="text">
+          <label for="nome">Instagran</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="celular" name="celular" type="text" required>
+          <label for="nome">Celular</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="telefone" name="telefone" type="text">
+          <label for="nome">Telefone</label>
+        </div>
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="tipoSangue" name="tipoSangue" type="text">
+          <label for="nome">Tipo Sangue</label>
+        </div>
+		<div class="input-field col s12 switch">
+			<label>Autoriza Fotos:<input type="checkbox" id="autorizaFotos" name="autorizaFotos"> <span class="lever"></span> Sim
+			</label>
+		</div>
+		<div class="input-field col s12 switch">
+			<label>Alergias?<input type="checkbox" id="possuiAlergias" name="possuiAlergias"> <span class="lever"></span> Sim
+			</label>
+		</div>
+		<div class="input-field col s12 switch">
+			<label>Diabetes?<input type="checkbox" id="possuiDiabetes" name="possuiDiabetes"> <span class="lever"></span> Sim
+			</label>
+		</div>	
+		<div class="input-field col s12 switch">
+			<label>Hepatite?<input type="checkbox" id="possuiHepatite" name="possuiHepatite"> <span class="lever"></span> Sim
+			</label>
+		</div>	
+		<div class="input-field col s12 switch">
+			<label>Anticoagulante?<input type="checkbox" id="tomaAnticoagulante" name="tomaAnticoagulante"> <span class="lever"></span> Sim
+			</label>
+		</div>
+	  </div>
+	  <label style="font-size: 25px; font-weight: lighter;">Endere&ccedil;o</label>	  
+      <div class="row">
+	  <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="rua" name="rua" type="text" required>
+          <label for="nome">Rua</label>
+        </div>
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="bairro" name="bairro" type="text" required>
+          <label for="nome">Bairro</label>
+        </div>   
+        <div class="input-field col s3">
+          <input style="font-size: 12px; font-weight: bold;" id="cidade" name="cidade" type="text" required>
+          <label for="nome">Cidade</label>
+        </div>   
+        <div class="input-field col s2">
+          <input style="font-size: 12px; font-weight: bold;" id="estado" name="estado" type="text" required>
+          <label for="nome">Estado</label>
+        </div> 
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="cep" name="cep" type="text" required>
+          <label for="nome">CEP</label>
+        </div>
+        <div class="input-field col s1">
+          <input style="font-size: 12px; font-weight: bold;" id="pais" name="pais" type="text" required>
+          <label for="nome">Pa&iacute;s</label>
+        </div>
+        </div>    
+    </form>
+    <a id="btnAdicionarNovoCliente" class="waves-effect waves-light grey darken-3 lighten-1 btn-small"><i class="material-icons left">save</i>Cadastrar</a>    
+  </div>
+</div>
+
+<script type="text/javascript" src="./js/materialize.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+	$('.modal').modal();
+	$('.dropdown-trigger').dropdown();
+	$('select').formSelect();			
+				
+	Date.prototype.toDateInputValue = (function() {
+	    var local = new Date(this);
+	    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+	    return local.toJSON().slice(0,10);
+	});
+	
+	$('#dataCadastro').val(new Date().toDateInputValue());
+	
+	$('#cpf').mask('999.999.999-99');
+	$('#celular').mask('(99)99999-9999');
+	$('#telefone').mask('(99)9999-9999');
+	$('#cep').mask('99999-999');
+	
+	$('#parcelasCredito').siblings().prop('disabled', 'disabled');	
+	
+	$('#totalDinheiro').mask("#,##0.00", {reverse: true});
+	$('#totalDebito').mask("#,##0.00", {reverse: true});
+	$('#totalCredito').mask("#,##0.00", {reverse: true});
+	$('#valorServico').mask("#,##0.00", {reverse: true});
+	$('#valorProduto').mask("#,##0.00", {reverse: true});
+	$('#valorTotal').mask("#,##0.00", {reverse: true});
+	$('#saqueTatuador').mask("#,##0.00", {reverse: true});
+	
+});
+
+var valorProdutoLabel;
+var valorServicoLabel;
+var valorTotalProdutoServico;
+
+$('#pagamentoDinheiro').change(function() {
+	 if(this.checked) {
+		 $('#totalDinheiro').prop('disabled',false);	 
+	 }else {
+		 $('#totalDinheiro').val('0.00');
+		 $('#totalDinheiro').prop('disabled','disabled');
+	 }
+});
+
+$('#pagamentoDebito').change(function() {
+	if(this.checked) {
+		 $('#totalDebito').prop('disabled',false);	 
+	 }else {
+		 $('#totalDebito').val('0.00');
+		 $('#totalDebito').prop('disabled','disabled');
+	 }
+});
+
+$('#pagamentoCredito').change(function() {
+	if(this.checked) {
+		 $('#totalCredito').prop('disabled',false);
+		 $('#parcelasCredito').siblings().prop('disabled',false);	 
+	 }else{
+		 $('#totalCredito').val('0.00');
+		 $('#totalCredito').prop('disabled','disabled');
+		 $('#parcelasCredito').siblings().prop('disabled','disabled');
+	 }
+});
+
+$('#saqueTatuadorLabel').change(function() {
+	if(this.checked){
+		$('#saqueTatuador').prop('disabled', false);
+	}else{
+		$('#saqueTatuador').prop('disabled', 'disabled');
+	}
+});
+
+$('#produtoId').on("change", function() {
+	
+	valorProdutoLabel = $(this).find(':selected').attr('valor');
+	$('#valorProduto').val(valorProdutoLabel);
+	$('#valorTotal').val(valorProdutoLabel);
+});
+
+$('#servicoId').on("change", function() {
+	
+	$('#valorServico').attr('disabled',false);
+	$('#valorServico').attr('placeholder','Digite o valor!');
+});
+
+$('#valorServico').blur(function(){
+    
+	valorServicoLabel =  $('#valorServico').val();
+	valorServicoLabel = valorServicoLabel.replace(',','.').replace('.00','').replace('.','');
+	
+	if(valorServicoLabel == ''){
+		valorServicoLabel = 0.00;
+	}
+	
+	if(valorProdutoLabel != null && valorServicoLabel != ''){
+		valorTotalProdutoServico = parseFloat(valorProdutoLabel) + parseFloat(valorServicoLabel);	
+	} else {
+		valorTotalProdutoServico = parseFloat(valorServicoLabel);
+	}
+
+	$('#valorTotal').val(valorTotalProdutoServico + '.00');
+});
+
+$("#clienteId").change(function() {
+	    
+    var id = ($(this).find('option:selected').attr('id'));
+    if(id == 'adicionarNovoCliente'){
+    	$('#modalNovoCliente').modal('open');
+    }
+    
+});
+
+$('#btnAdicionarNovoCliente').click(function() {
+	
+	if ($('#nome').val()) {
+
+			$('#btnSalvar').attr('disabled', 'disabled');
+			
+			if(!$('#autorizaFotos').prop('checked')){
+				$('#autorizaFotos').val('false');
+			}
+			if(!$('#possuiAlergias').prop('checked')){
+				$('#possuiAlergias').val('false');
+			}
+			if(!$('#possuiDiabetes').prop('checked')){
+				$('#possuiDiabetes').val('false');
+			}
+			if(!$('#possuiHepatite').prop('checked')){
+				$('#possuiHepatite').val('false');
+			}
+			if(!$('#tomaAnticoagulante').prop('checked')){
+				$('#tomaAnticoagulante').val('false');
+			}
+
+			$.ajax({
+				type : 'POST',
+				url : 'cadastrarCliente',
+				data : {
+					'nome' : $('#nome').val(),
+					'cpf' : $('#cpf').val(),
+					'dataNascimento' : $('#dataNascimento').val(),
+					'email' : $('#email').val(),
+					'instagran' : $('#instagran').val(),
+					'celular' : $('#celular').val(),
+					'telefone' : $('#telefone').val(),
+					'tipoSangue' : $('#tipoSangue').val(),
+					'autorizaFotos' : $('#autorizaFotos').val(),
+					'possuiAlergias' : $('#possuiAlergias').val(),
+					'possuiDiabetes' : $('#possuiDiabetes').val(),
+					'possuiHepatite' : $('#possuiHepatite').val(),
+					'tomaAnticoagulante' : $('#tomaAnticoagulante').val(),
+					
+					'rua' : $('#rua').val(),
+					'bairro' : $('#bairro').val(),
+					'cidade' : $('#cidade').val(),
+					'estado' : $('#estado').val(),
+					'cep' : $('#cep').val(),
+					'pais' : $('#pais').val(),
+				},
+				success : function(data) {
+					location.reload();
+				},
+				error : function() {
+					alert("Ocorreu um erro ao cadastrar o cliente.");
+				}
+			});
+		} else {
+			alert('Preencha todos os dados para prosseguir!');
+			return;
+		}
+});
+
+$("#btnSalvar").click(function() {
+	
+	var valueDinheiro = $('#totalDinheiro').val();
+	if(valueDinheiro.includes(",")){
+		valueDinheiro = valueDinheiro.replace(',','.').replace('.','');	
+	}
+	
+	var valueDebito = $('#totalDebito').val();
+	if(valueDebito.includes(",")){
+		valueDebito = valueDebito.replace(',','.').replace('.','');
+	}
+	
+	var valueCredito = $('#totalCredito').val();
+	if(valueCredito.includes(",")){
+		valueCredito = valueCredito.replace(',','.').replace('.','');
+	}
+	
+	var valueServico = $('#valorServico').val();
+	if(valueServico.includes(",")){
+		valueServico = valueServico.replace(',','.').replace('.','');
+	}
+	
+	var valueProduto = $('#valorProduto').val();
+	if(valueProduto.includes(",")){
+		valueProduto = valueProduto.replace(',','.').replace('.','');	
+	}
+	
+	var valueSaque = $('#saqueTatuador').val();
+	if(valueSaque.includes(",")){
+		valueSaque = valueSaque.replace(',','.').replace('.','');	
+	}
+	
+	var valueTotal = $('#valorTotal').val();
+	
+	if(valueServico == ''){
+		$('#servicoId').val(null);
+	} else if (valueProduto == ''){
+		$('#produtoId').val(null);
+	}
+	
+	if(valueDinheiro == ''){
+		valueDinheiro = 0.00;
+	}
+	if(valueDebito == ''){
+		valueDebito = 0.00;
+	}
+	if(valueCredito == ''){
+		valueCredito = 0.00;
+	}
+	
+	var valuePagamentos = parseFloat(valueDinheiro) + parseFloat(valueDebito) + parseFloat(valueCredito);
+	
+	if(valuePagamentos > valueTotal){
+		alert('O valor das formas de pagamento nao podem ser maior que o valor total da OS');
+		$('#fecharModalConfirma')[0].click();
+		return false;
+	} else if(valuePagamentos != valueTotal){
+		alert('O valor das formas de pagamento devem ser iguais ao valor total!');
+		$('#fecharModalConfirma')[0].click();
+		return false;
+	} else if(valueSaque > valueTotal){
+		alert('O valor do saque nao pode ser maior que o valor total!');
+		$('#fecharModalConfirma')[0].click();
+		return false;
+	} else if (valueSaque > valueDinheiro){
+		alert('O valor do saque nao pode ser maior que o valor recebido em dinheiro!');
+		$('#fecharModalConfirma')[0].click();
+		return false;
+	} else if (valueTotal == 0.00){
+		alert('O valor total nao pode ser zerado!');
+		$('#fecharModalConfirma')[0].click();
+		return false;
+	} 
+	
+	if ($('#clienteId').val() && $('#valorTotal').val()) {
+		
+		$.ajax({
+			type : 'POST',
+			url : 'novaOS',
+			data : {
+				'dataCadastro' : $('#dataCadastro').val(),
+				'cliente.clienteId' : $('#clienteId').val(),
+				'produtoId' : $('#produtoId').val(),
+				'servicoId' : $('#servicoId').val(),
+				'descricao' : $('#descricao').val(),
+				'observacao' : $('#observacao').val(),
+				'valorProduto' : valueProduto,	
+				'valorServico' : valueServico,
+				'totalDinheiro' : valueDinheiro,
+				'totalDebito' : valueDebito,
+				'totalCredito' : valueCredito,
+				'valorTotal' : $('#valorTotal').val(),
+				'totalParcelasCredito' : $('#parcelasCredito').val(),
+				'saqueTatuador' : valueSaque,
+			},
+			success : function(data) {
+				location.href = './ordemServico';
+			},
+			error : function() {
+				alert("Ocorreu um erro ao cadastrar a OS.");
+				location.href = './ordemServico';
+			}
+		});
+		
+	} else {
+		alert('Preencha todos os campos para prosseguir!');
+		return;	
+	}			
+});
+</script>
+</body>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
+</html>
