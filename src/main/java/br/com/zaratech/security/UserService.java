@@ -67,7 +67,7 @@ public class UserService implements UserDetailsService {
 			    	blackBox.setDataCadastro(new Date());
 			    	blackBox.setUsuario(usuarioBean.getUsuario());
 			    	blackBox.setModulo("UserDetails");
-			    	blackBox.setAcao("Autenticacao de usuario");
+			    	blackBox.setAcao("Usuario " + usuarioBean.getUsuario().getNome() + " entrou.");
 			    	blackBoxRepository.save(blackBox);
 		    	}
 			}

@@ -1,5 +1,6 @@
 package br.com.zaratech.controller;
 
+import br.com.zaratech.service.IndexService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,62 +16,31 @@ import br.com.zaratech.repository.ParametrosRepository;
 @Controller
 public class IndexController {
 
-	static Logger log = Logger.getLogger(IndexController.class);
-
 	@Autowired
-	private UsuarioBean usuarioBean;
-	@Autowired
-	private ParametrosRepository parametrosRepository;
+	private IndexService indexService;
 	
 	@RequestMapping("/")
 	public String home() {		
-		if(usuarioBean != null) {
-			return "redirect:/index";
-		} else {
-			return "redirect:/login";
-		}
+		return indexService.home();
 	}
 
 	@RequestMapping(value = "/login")
 	public ModelAndView login() {
-
-		ModelAndView mv = new ModelAndView("login");
-		mv.addObject("msg", "");
-		return mv;
+		return indexService.login();
 	}
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView index() {
-	
-		ModelAndView mv = new ModelAndView("index");		
-		
-		if(usuarioBean.getUsuario() != null) {
-			
-			final ParametrosSistema modalInformativo = parametrosRepository.findByChave(Parametros.MODAL_INFORMATIVO);
-			if(modalInformativo != null && modalInformativo.getChave() != null && modalInformativo.getValor().equals("1")) {
-				mv.addObject("modalInformativo",true);
-			}else {
-				mv.addObject("modalInformativo",false);
-			}	
-			mv.addObject("usuarioLogado", usuarioBean.getUsuario());
-			return mv;
-		}else {
-			mv.addObject("msg", "");
-			mv = new ModelAndView("login");
-			return mv;
-		}
+		return indexService.index();
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String isLogout() {
-
-		return "logout";
+		return indexService.isLogout();
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String logout() {
-
-		log.info("Logout realizado!");
-		return "logout";
+		return indexService.logout();
 	}
 }
